@@ -1,0 +1,68 @@
+.container {
+  padding: 40px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.avatarIcon {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+.userName {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+.row p {
+  font-size: 15px;
+  color: var(--text-main);
+}
+.separator {
+  height: 1px;
+  background-color: var(--border);
+  width: 100%;
+}
+.logoutBtn {
+  width: 100%;
+  background: transparent;
+  color: var(--brand-red);
+  border: 2px solid var(--brand-red);
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 800;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.logoutBtn:hover {
+  background: var(--brand-red);
+  color: white;
+}

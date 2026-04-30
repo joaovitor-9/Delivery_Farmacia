@@ -1,0 +1,195 @@
+.container {
+  padding: 40px 20px;
+  max-width: 1000px; 
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+.activeOrder {
+  background: white;
+  border: 2px solid var(--brand-blue, #1e1b4b);
+  border-radius: 16px;
+  padding: 30px 40px; 
+  margin-bottom: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.activeHeader {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+}
+.activeHeader h2 {
+  font-size: 22px;
+  color: var(--brand-blue, #1e1b4b);
+}
+.activeHeader p {
+  color: var(--text-muted, #64748b);
+  font-size: 15px;
+  font-weight: 500;
+}
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 30px 0;
+  padding: 0 10%; 
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  border: 3px solid white;
+  z-index: 2;
+}
+.dotFilled {
+  background: var(--brand-blue, #1e1b4b);
+  box-shadow: 0 0 10px rgba(30, 27, 75, 0.4);
+}
+.statusLabel {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--brand-blue, #1e1b4b);
+  margin-top: 20px;
+}
+.historyTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--brand-blue, #1e1b4b);
+  margin-bottom: 25px;
+  padding-left: 10px;
+}
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.historyGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.2fr 1fr 150px; 
+  align-items: center;
+  gap: 20px;
+}
+.colId { text-align: left; }
+.colDate { text-align: left; }
+.colValue { text-align: left; }
+.colStatus { text-align: center; display: flex; justify-content: center; align-items: center; }
+.colAction { text-align: right; display: flex; justify-content: flex-end; align-items: center; }
+
+.tableHeader {
+  padding: 0 25px 10px 25px;
+}
+.tableHeader div {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.orderCard {
+  background: white;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 15px 25px; 
+  transition: all 0.2s;
+}
+.orderCard:hover {
+  border-color: var(--brand-blue, #1e1b4b);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.orderCard .colId { font-size: 16px; color: var(--text-main, #333); }
+.orderCard .colDate { font-size: 15px; color: var(--text-muted, #64748b); }
+.orderCard .colValue { font-size: 16px; color: var(--text-main, #333); }
+
+.concluidoBadge {
+  border: 1px solid var(--border, #e2e8f0);
+  color: var(--text-main, #333);
+  background-color: #f8fafc;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.detailsBtn {
+  background: transparent;
+  border: 1px solid var(--brand-blue, #1e1b4b);
+  color: var(--brand-blue, #1e1b4b);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%; 
+  max-width: 140px; 
+}
+.detailsBtn:hover {
+  background: var(--brand-blue, #1e1b4b);
+  color: white;
+}
+@media (max-width: 768px) {
+  .activeOrder {
+    padding: 20px;
+  }
+  .timeline {
+    padding: 0;
+  }
+  .timeline::before {
+    left: 0;
+    right: 0;
+  }
+  .tableHeader {
+    display: none;
+  }
+  .orderCard {
+    grid-template-columns: 1fr auto; 
+    grid-template-areas: 
+      "id status"
+      "date value"
+      "action action";
+    gap: 10px;
+    padding: 20px;
+  }
+  .colId, .colDate, .colValue, .colStatus, .colAction {
+    text-align: left;
+    display: block;
+  }
+  .colId { grid-area: id; }
+  
+  .colStatus { 
+    grid-area: status; 
+    display: flex;
+    justify-content: flex-end; 
+  }
+  .colDate { grid-area: date; font-size: 13px; }
+
+  .colValue { 
+    grid-area: value; 
+    text-align: right; 
+    font-size: 14px; 
+  }
+  .colAction { 
+    grid-area: action; 
+    margin-top: 15px; 
+  }
+  .detailsBtn {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+  }
+}

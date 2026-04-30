@@ -1,0 +1,126 @@
+/* app/(cliente)/Home.module.css */
+.container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--brand-blue);
+  margin-bottom: 20px;
+}
+.carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; 
+  padding-bottom: 15px; 
+  scroll-behavior: smooth; 
+  -webkit-overflow-scrolling: touch; 
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+.card {
+  flex: 0 0 220px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: var(--brand-blue);
+}
+.imageArea {
+  background: #f1f5f9;
+  border-radius: 8px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.productName {
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 600;
+  margin-bottom: 5px;
+  padding-right: 35px;
+}
+.price {
+  color: var(--brand-blue);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: auto;
+}
+.addBtnSquare {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: var(--brand-red);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s;
+}
+.addBtnSquare:hover {
+  filter: brightness(1.2);
+}
+.carouselWrapper {
+  position: relative;
+  width: 100%;
+}
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.arrow:hover {
+  background-color: var(--brand-blue);
+  transform: translateY(-50%) scale(1.1);
+}
+.left {
+  left: -10px;
+}
+.right {
+  right: -10px;
+}
+.carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}

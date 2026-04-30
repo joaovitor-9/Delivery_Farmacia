@@ -1,0 +1,235 @@
+.container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--brand-blue, #1e1b4b);
+  margin-bottom: 30px;
+}
+.content {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+.leftCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.cartItem {
+  background: white;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.imageArea {
+  background: #f1f5f9;
+  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.itemInfo {
+  flex: 1;
+}
+.itemName {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main, #333);
+}
+.itemPrice {
+  color: var(--brand-blue, #1e1b4b);
+  font-weight: 700;
+  margin-top: 5px;
+}
+.removeBtn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.addressSection {
+  background: white;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 25px;
+}
+.sectionTitle {
+  font-size: 20px;
+  color: var(--brand-blue, #1e1b4b);
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.formRow {
+  display: flex;
+  gap: 15px;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.cepField {
+  max-width: 150px;
+}
+.inputGroup label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+}
+.inputGroup input {
+  padding: 12px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+.summary {
+  width: 320px;
+  background: white;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 25px;
+  position: sticky;
+  top: 20px;
+}
+.summary h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: var(--text-main, #333);
+}
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: var(--text-muted, #64748b);
+  font-size: 15px;
+}
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #f1f5f9;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--brand-blue, #1e1b4b);
+}
+.checkoutBtn {
+  width: 100%;
+  background-color: var(--brand-red, #dc2626);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 18px;
+  font-weight: 800;
+  font-size: 16px;
+  margin-top: 25px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.checkoutBtn:hover {
+  opacity: 0.9;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  gap: 15px;
+}
+.step, .stepActive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.step {
+  color: var(--text-muted, #64748b);
+}
+.stepActive {
+  color: var(--brand-blue, #1e1b4b);
+}
+.stepCircle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+.stepActive .stepCircle {
+  background: var(--brand-blue, #1e1b4b);
+  color: white;
+  border-color: var(--brand-blue, #1e1b4b);
+}
+.stepLine {
+  height: 2px;
+  width: 50px;
+  background-color: var(--border, #e2e8f0);
+  margin-bottom: 20px;
+}
+.qtyControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 15px;
+}
+.qtyBtn {
+  background: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main, #333);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.qtyBtn:hover {
+  background: #f1f5f9;
+}
+.qtyNumber {
+  padding: 0 15px;
+  font-weight: 700;
+  font-size: 15px;
+}
+@media (max-width: 900px) {
+  .content {
+    flex-direction: column;
+  }
+  .summary {
+    width: 100%;
+    position: static;
+  }
+  .stepper {
+    display: none;
+  }
+  .cartItem {
+    flex-wrap: wrap;
+  }
+}
