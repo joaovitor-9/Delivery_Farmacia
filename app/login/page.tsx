@@ -6,12 +6,12 @@ import Link from 'next/link';
 import styles from './login.module.css';
 
 const CLIENTES_MOCK = [
-  { email: 'cliente@gmail.com', senha: '123' }
+  { email: 'cliente@gmail.com', senha: '123', nome: 'João Silva' }
 ];
 
 const FUNCIONARIOS_MOCK = [
-  { usuario: 'admin', senha: '123' },
-  { usuario: '11122233344', senha: '123' }
+  { usuario: 'admin', senha: '123', nome: 'Administrador' },
+  { usuario: '11122233344', senha: '123', nome: 'Carlos Tech' }
 ];
 
 export default function Login() {
@@ -28,16 +28,20 @@ export default function Login() {
     if (tipoLogin === 'cliente') {
       const user = CLIENTES_MOCK.find(c => c.email === identificacao && c.senha === senha);
       if (user) {
-        alert('Login de Cliente realizado com sucesso!');
+        // Salva os dados no navegador
+        localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: 'cliente' }));
         router.push('/');
+        // Força a atualização para o Header ler os novos dados
+        setTimeout(() => window.location.reload(), 100);
       } else {
         setErro('E-mail ou senha incorretos.');
       }
     } else {
       const func = FUNCIONARIOS_MOCK.find(f => f.usuario === identificacao && f.senha === senha);
       if (func) {
-        alert('Login de Funcionário realizado com sucesso!');
+        localStorage.setItem('user', JSON.stringify({ nome: func.nome, tipo: 'funcionario' }));
         router.push('/dashboard');
+        setTimeout(() => window.location.reload(), 100);
       } else {
         setErro('Usuário ou senha incorretos.');
       }
@@ -47,7 +51,6 @@ export default function Login() {
   return (
     <main className={styles.container}>
       <div className={styles.loginCard}>
-        
         <div className={styles.header}>
           <Link href="/">
             <img src="/logo.png" alt="Farmácia De$contão" className={styles.logo} />
@@ -72,45 +75,31 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleLogin} className={styles.form}>
-          
           {erro && <div className={styles.errorBox}>{erro}</div>}
-
           <div className={styles.inputGroup}>
-            <label>
-              {tipoLogin === 'cliente' ? 'E-mail' : 'Usuário (Nome, CPF ou ID)'}
-            </label>
+            <label>{tipoLogin === 'cliente' ? 'E-mail' : 'Usuário'}</label>
             <input 
               type={tipoLogin === 'cliente' ? 'email' : 'text'}
-              placeholder={tipoLogin === 'cliente' ? 'exemplo@email.com' : 'Digite sua identificação'}
               value={identificacao}
               onChange={(e) => setIdentificacao(e.target.value)}
               required
             />
           </div>
-
           <div className={styles.inputGroup}>
             <label>Senha</label>
             <input 
               type="password" 
-              placeholder="••••••••"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
             />
           </div>
-
-          <button type="submit" className={styles.submitBtn}>
-            Entrar
-          </button>
-
+          <button type="submit" className={styles.submitBtn}>Entrar</button>
         </form>
 
         <div className={styles.footer}>
-          <Link href="/" className={styles.backLink}>
-            ← Voltar para a loja
-          </Link>
+          <Link href="/" className={styles.backLink}>← Voltar para a loja</Link>
         </div>
-
       </div>
     </main>
   );

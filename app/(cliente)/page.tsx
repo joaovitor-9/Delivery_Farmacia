@@ -4,11 +4,11 @@ import { useRef } from 'react';
 import styles from './home.module.css';
 
 const MEDICAMENTOS = [
-  { id: 1, nome: "Dipirona 500mg - 10 Comprimidos", preco: "R$ 9,90", img: "💊" },
-  { id: 2, nome: "Dorflex 36 Comprimidos", preco: "R$ 22,50", img: "🩹" },
-  { id: 3, nome: "Neosaldina 20 Drágeas", preco: "R$ 29,90", img: "🩺" },
-  { id: 4, nome: "Vitamina C Cenevit 1g", preco: "R$ 18,90", img: "🍊" },
-  { id: 5, nome: "Ibuprofeno 600mg", preco: "R$ 15,00", img: "💊" },
+  { id: 1, nome: "Dipirona 500mg - 10 Comprimidos", preco: "R$ 9,90"},
+  { id: 2, nome: "Dorflex 36 Comprimidos", preco: "R$ 22,50"},
+  { id: 3, nome: "Neosaldina 20 Drágeas", preco: "R$ 29,90"},
+  { id: 4, nome: "Vitamina C Cenevit 1g", preco: "R$ 18,90"},
+  { id: 5, nome: "Ibuprofeno 600mg", preco: "R$ 15,00"},
 ];
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
           {MEDICAMENTOS.map((m) => (
             <div key={m.id} className={styles.card}>
               <div className={styles.imageArea}>
-                <span style={{ fontSize: '40px' }}>{m.img}</span>
+                <span style={{ fontSize: '40px' }}></span>
               </div>
               <h3 className={styles.productName}>{m.nome}</h3>
               <p className={styles.price}>{m.preco}</p>

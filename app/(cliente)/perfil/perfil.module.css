@@ -4,65 +4,88 @@
   margin: 0 auto;
   padding-bottom: 100px;
 }
+
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 30px;
 }
-.avatarIcon {
-  font-size: 60px;
-  margin-bottom: 10px;
+
+/* Estilo para o círculo em volta do ícone de perfil */
+.avatarWrapper {
+  width: 100px;
+  height: 100px;
+  background-color: #f8fafc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
 }
+
 .userName {
   font-size: 24px;
   font-weight: 800;
-  color: var(--text-main);
+  color: #1e1b4b;
 }
+
 .card {
   background: white;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
+
 .label {
   display: block;
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #64748b;
   letter-spacing: 1px;
   margin-bottom: 15px;
 }
+
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
 }
+
 .row p {
   font-size: 15px;
-  color: var(--text-main);
+  color: #1e1b4b;
 }
+
 .separator {
   height: 1px;
-  background-color: var(--border);
+  background-color: #e2e8f0;
   width: 100%;
 }
+
+/* Botão Sair - Estilo idêntico à imagem enviada */
 .logoutBtn {
   width: 100%;
   background: transparent;
-  color: var(--brand-red);
-  border: 2px solid var(--brand-red);
+  color: #dc2626; /* Cor brand-red */
+  border: 1px solid #dc2626; /* Borda fina conforme a foto */
   padding: 15px;
   border-radius: 12px;
   font-weight: 800;
+  font-size: 16px;
   margin-top: 20px;
   cursor: pointer;
+  display: flex; /* Ativa o flex para alinhar ícone e texto */
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Espaço entre o ícone e o texto */
   transition: all 0.2s;
 }
+
 .logoutBtn:hover {
-  background: var(--brand-red);
+  background: #dc2626;
   color: white;
 }

@@ -6,6 +6,7 @@
   background-color: var(--brand-blue, #1e1b4b); 
   padding: 20px;
 }
+
 .loginCard {
   background: white;
   width: 100%;
@@ -14,21 +15,25 @@
   padding: 40px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
+
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 30px;
 }
+
 .logo {
   height: 90px;
   object-fit: contain;
   margin-bottom: 10px;
 }
+
 .header p {
-  color: var(--text-muted, #64748b);
+  color: #64748b;
   font-size: 14px;
 }
+
 .toggleContainer {
   display: flex;
   background-color: #f1f5f9;
@@ -36,6 +41,7 @@
   padding: 5px;
   margin-bottom: 25px;
 }
+
 .toggleBtn {
   flex: 1;
   background: transparent;
@@ -43,21 +49,26 @@
   padding: 10px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-muted, #64748b);
+  color: #64748b;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.toggleBtn.active {
-  background: white;
-  color: var(--brand-blue, #1e1b4b);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+/* AJUSTE AQUI: Mudamos de .toggleBtn.active para apenas .active */
+/* Isso garante que o styles.active no seu TSX encontre a classe corretamente */
+.active {
+  background: white !important;
+  color: var(--brand-blue, #1e1b4b) !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .errorBox {
   background-color: #fee2e2;
   color: var(--brand-red, #dc2626);
@@ -68,27 +79,32 @@
   text-align: center;
   border: 1px solid #fca5a5;
 }
+
 .inputGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .inputGroup label {
   font-size: 13px;
   font-weight: 700;
   color: var(--brand-blue, #1e1b4b);
 }
+
 .inputGroup input {
   padding: 14px;
-  border: 1px solid var(--border, #e2e8f0);
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
 }
+
 .inputGroup input:focus {
   border-color: var(--brand-blue, #1e1b4b);
 }
+
 .submitBtn {
   background-color: var(--brand-blue, #1e1b4b);
   color: white;
@@ -101,20 +117,24 @@
   margin-top: 10px;
   transition: opacity 0.2s;
 }
+
 .submitBtn:hover {
   opacity: 0.9;
 }
+
 .footer {
   margin-top: 25px;
   text-align: center;
 }
+
 .backLink {
-  color: var(--text-muted, #64748b);
+  color: #64748b;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   transition: color 0.2s;
 }
+
 .backLink:hover {
   color: var(--brand-blue, #1e1b4b);
 }

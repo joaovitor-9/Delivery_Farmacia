@@ -1,8 +1,11 @@
+'use client'
+
+import { Trash2 } from 'lucide-react'; // Importando o ícone da biblioteca instalada
 import styles from './carrinho.module.css';
 
 const ITENS_CARRINHO = [
-  { id: 1, nome: "Dipirona 500mg - 10 Comprimidos", preco: 9.90, img: "💊" },
-  { id: 2, nome: "Dorflex 36 Comprimidos", preco: 22.50, img: "🩹" },
+  { id: 1, nome: "Dipirona 500mg - 10 Comprimidos", preco: 9.90},
+  { id: 2, nome: "Dorflex 36 Comprimidos", preco: 22.50},
 ];
 
 export default function Carrinho() {
@@ -38,7 +41,7 @@ export default function Carrinho() {
           <section className={styles.productsList}>
             {ITENS_CARRINHO.map((item) => (
               <div key={item.id} className={styles.cartItem}>
-                <div className={styles.imageArea}>{item.img}</div>
+                <div className={styles.imageArea}></div>
                 <div className={styles.itemInfo}>
                   <h3 className={styles.itemName}>{item.nome}</h3>
                   <p className={styles.itemPrice}>R$ {item.preco.toFixed(2).replace('.', ',')}</p>
@@ -50,7 +53,10 @@ export default function Carrinho() {
                   <button className={styles.qtyBtn}>+</button>
                 </div>
 
-                <button className={styles.removeBtn}>🗑️</button>
+                {/* Ícone trocado aqui para Trash2 */}
+                <button className={styles.removeBtn}>
+                  <Trash2 size={20} color="#94a3b8" strokeWidth={1.5} />
+                </button>
               </div>
             ))}
           </section>

@@ -1,10 +1,22 @@
+'use client'
+
+import { User, ChevronRight, CreditCard, LogOut } from 'lucide-react'; // Usando o 'User' para seguir a foto
 import styles from './perfil.module.css';
 
 export default function Perfil() {
+  
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.href = '/';
+  };
+
   return (
     <main className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.avatarIcon}>👤</div>
+        {/* Container circular para o ícone de perfil */}
+        <div className={styles.avatarWrapper}>
+          <User size={100} color="#1e1b4b" strokeWidth={2.5} />
+        </div>
         <h1 className={styles.userName}>João Elias</h1>
       </div>
 
@@ -15,7 +27,7 @@ export default function Perfil() {
         </div>
         <div className={styles.separator}></div>
         <div className={styles.row}>
-          <p><strong>Email:</strong> meuemail@gmail.com</p>
+          <p><strong>Email:</strong> cliente@gmail.com</p>
         </div>
       </div>
 
@@ -23,12 +35,12 @@ export default function Perfil() {
         <span className={styles.label}>MEUS ENDEREÇOS</span>
         <div className={styles.row}>
           <p><strong>Casa (Centro)</strong></p>
-          <span>❯</span>
+          <ChevronRight size={20} color="#64748b" />
         </div>
         <div className={styles.separator}></div>
         <div className={styles.row}>
           <p><strong>Trabalho (Bairro Novo)</strong></p>
-          <span>❯</span>
+          <ChevronRight size={20} color="#64748b" />
         </div>
       </div>
 
@@ -36,16 +48,20 @@ export default function Perfil() {
         <span className={styles.label}>PAGAMENTO</span>
         <div className={styles.row}>
           <p><strong>Cartão de Crédito **** 1234</strong></p>
-          <span>💳</span>
+          <CreditCard size={20} color="#64748b" />
         </div>
         <div className={styles.separator}></div>
         <div className={styles.row}>
           <p><strong>Cartão de Débito **** 1010</strong></p>
-          <span>💳</span>
+          <CreditCard size={20} color="#64748b" />
         </div>
       </div>
 
-      <button className={styles.logoutBtn}>Sair da Conta</button>
+      {/* Botão configurado conforme a primeira imagem */}
+      <button className={styles.logoutBtn} onClick={handleLogout}>
+        <LogOut size={20} />
+        Sair da Conta
+      </button>
     </main>
   );
 }
