@@ -28,7 +28,6 @@ export default function Login() {
       const user = CLIENTES_MOCK.find(c => c.email === identificacao && c.senha === senha);
       if (user) {
         localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: 'cliente' }));
-        // Navegação direta com recarregamento forçado
         window.location.href = '/'; 
       } else {
         setErro('E-mail ou senha incorretos.');
@@ -37,7 +36,6 @@ export default function Login() {
       const func = FUNCIONARIOS_MOCK.find(f => f.usuario === identificacao && f.senha === senha);
       if (func) {
         localStorage.setItem('user', JSON.stringify({ nome: func.nome, tipo: 'funcionario' }));
-        // Navegação direta com recarregamento forçado para o painel
         window.location.href = '/dashboard'; 
       } else {
         setErro('Usuário ou senha incorretos.');
