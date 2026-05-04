@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+PharmaDelivery - Sistema de Delivery
+Aplicação fullstack moderna desenvolvida para simular a operação de uma farmácia online, focada em performance e experiência do usuário. O projeto utiliza Next.js com renderização híbrida para garantir agilidade e segurança.
 
-## Getting Started
+Ajustes e melhorias
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas para as seguintes tarefas:
 
-First, run the development server:
+[x] Estruturação de Schema Prisma para produtos e categorias
 
-```bash
+[x] Criação de componentes de UI responsivos 
+
+[x] Painel administrativo para gestão de estoque
+
+[ ] Gerenciamento de estado do carrinho de compras
+
+[ ] Integração com Gateway de Pagamento
+
+[ ]Intregação com o banco de dados
+
+🎨 Planejamento Visual e Funcional
+Prototipação (Baixa Fidelidade)
+Abaixo está o esboço inicial da interface, focado na disposição dos elementos e fluxo de navegação do usuário.
+
+[https://www.figma.com/proto/XKzc8QdniHfRaDnHFNal0r/Prot%C3%B3tipo-Sistema-Delivery-de-Farm%C3%A1cia?node-id=1-2&p=f&t=R0JCD5BARSK5lrAj-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2]
+
+Diagrama de Caso de Uso
+O diagrama a seguir descreve as interações dos atores (Cliente/Administrador) com as funcionalidades centrais do sistema.
+
+<img width="461" height="566" alt="diagrama de caso de usso PharmaDelivery" src="https://github.com/user-attachments/assets/758a15f0-1cde-4216-80e1-b802b6927761" />
+
+💻 Pré-requisitos
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
+
+Você instalou a versão estável mais recente do Node.js e NPM.
+
+Você tem uma máquina Windows, Linux ou Mac.
+
+
+🚀 Instalando PharmaDelivery
+Para instalar o PharmaDelivery, siga estas etapas:
+
+Linux, macOS e Windows:
+
+Bash
+# Clone o repositório
+git clone https://github.com/joaovitor-9/Delivery_Farmacia.git
+
+# Acesse a pasta
+cd Delivery_Farmacia
+
+# Instale as dependências
+npm install
+
+# Inicie o servidor
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Acesse http://localhost:3000 no seu navegador para ver o resultado.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
