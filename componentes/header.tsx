@@ -11,7 +11,6 @@ export default function Header() {
   const [user, setUser] = useState<{ nome: string; tipo: string } | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Recupera o usuário do localStorage ao carregar a página
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
@@ -26,7 +25,6 @@ export default function Header() {
     window.location.href = '/';
   };
 
-  // Páginas que usam o cabeçalho "limpo" (sem busca/filtros)
   const isCleanPage = pathname === '/carrinho' || pathname === '/pedidos' || pathname === '/perfil' || pathname === '/login';
 
   return (
@@ -48,7 +46,6 @@ export default function Header() {
 
               <div className={styles.actions}>
                 {!user ? (
-                  /* ESTADO: ENTRE OU CADASTRE-SE */
                   <Link href="/login" className={styles.userAction}>
                     <User size={24} color="#ffffff" />
                     <div className={styles.userText}>
@@ -56,7 +53,6 @@ export default function Header() {
                     </div>
                   </Link>
                 ) : (
-                  /* ESTADO: USUÁRIO LOGADO */
                   <div className={styles.userMenuContainer}>
                     <button className={styles.userActionAuth} onClick={() => setIsMenuOpen(!isMenuOpen)}>
                       <User size={24} color="#ffffff" />
@@ -101,7 +97,6 @@ export default function Header() {
             </nav>
           </>
         ) : (
-          /* CABEÇALHO DE CHECKOUT/PERFIL */
           <div className={styles.checkoutHeader}>
             <Link href="/" className={styles.backLink}>❮ Continuar comprando</Link>
             <div className={styles.logoCheckoutWrapper}>

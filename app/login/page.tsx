@@ -6,12 +6,11 @@ import Link from 'next/link';
 import styles from './login.module.css';
 
 const CLIENTES_MOCK = [
-  { email: 'cliente@gmail.com', senha: '123', nome: 'João Silva' }
+  { email: 'cliente@gmail.com', senha: '123', nome: 'João Elias' }
 ];
 
 const FUNCIONARIOS_MOCK = [
   { usuario: 'admin', senha: '123', nome: 'Administrador' },
-  { usuario: '11122233344', senha: '123', nome: 'Carlos Tech' }
 ];
 
 export default function Login() {
@@ -28,11 +27,9 @@ export default function Login() {
     if (tipoLogin === 'cliente') {
       const user = CLIENTES_MOCK.find(c => c.email === identificacao && c.senha === senha);
       if (user) {
-        // Salva os dados no navegador
         localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: 'cliente' }));
-        router.push('/');
-        // Força a atualização para o Header ler os novos dados
-        setTimeout(() => window.location.reload(), 100);
+        // Navegação direta com recarregamento forçado
+        window.location.href = '/'; 
       } else {
         setErro('E-mail ou senha incorretos.');
       }
@@ -40,8 +37,8 @@ export default function Login() {
       const func = FUNCIONARIOS_MOCK.find(f => f.usuario === identificacao && f.senha === senha);
       if (func) {
         localStorage.setItem('user', JSON.stringify({ nome: func.nome, tipo: 'funcionario' }));
-        router.push('/dashboard');
-        setTimeout(() => window.location.reload(), 100);
+        // Navegação direta com recarregamento forçado para o painel
+        window.location.href = '/dashboard'; 
       } else {
         setErro('Usuário ou senha incorretos.');
       }

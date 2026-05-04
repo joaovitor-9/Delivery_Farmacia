@@ -1,6 +1,6 @@
 'use client'
 
-import { User, ChevronRight, CreditCard, LogOut } from 'lucide-react'; // Usando o 'User' para seguir a foto
+import { User, ChevronRight, CreditCard, LogOut } from 'lucide-react';
 import styles from './perfil.module.css';
 
 export default function Perfil() {
@@ -13,7 +13,6 @@ export default function Perfil() {
   return (
     <main className={styles.container}>
       <div className={styles.header}>
-        {/* Container circular para o ícone de perfil */}
         <div className={styles.avatarWrapper}>
           <User size={100} color="#1e1b4b" strokeWidth={2.5} />
         </div>
@@ -57,7 +56,6 @@ export default function Perfil() {
         </div>
       </div>
 
-      {/* Botão configurado conforme a primeira imagem */}
       <button className={styles.logoutBtn} onClick={handleLogout}>
         <LogOut size={20} />
         Sair da Conta

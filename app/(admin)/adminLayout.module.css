@@ -4,7 +4,6 @@
   background-color: #f4f6f8; 
   color: var(--text-main);
 }
-
 .sidebar {
   width: 260px;
   background-color: var(--brand-blue);
@@ -12,63 +11,53 @@
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0,0,0,0.05);
 }
-
 .logoContainer {
   padding: 2rem 1.5rem 1rem 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-/* --- Nova Seção de Perfil --- */
 .profileContainer {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem 2rem 2rem 2rem;
 }
-
 .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.15); /* Fundo sutil para o ícone */
+  background-color: rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
   color: white;
 }
-
 .profileInfo {
   display: flex;
   flex-direction: column;
 }
-
 .profileName {
   margin: 0;
   color: #ffffff;
   font-weight: 700;
   font-size: 1rem;
 }
-
 .profileRole {
   margin: 0;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.8rem;
   margin-top: 0.1rem;
 }
-
-/* --- Menu de Navegação --- */
 .navMenu {
   display: flex;
   flex-direction: column;
 }
-
 .navItem {
   display: flex;
   align-items: center;
-  gap: 0.8rem; /* Espaço entre o ícone e o texto */
+  gap: 0.8rem;
   padding: 1.2rem 2rem;
   color: var(--bg-main);
   text-decoration: none;
@@ -77,22 +66,17 @@
   border-left: 5px solid transparent; 
   transition: background-color 0.2s, border-color 0.2s;
 }
-
 .navItem:hover {
   background-color: rgba(0, 0, 0, 0.08); 
 }
-
 .active {
   background-color: rgba(0, 0, 0, 0.15); 
   border-left: 5px solid var(--brand-red); 
 }
-
-/* --- Rodapé (Sair) --- */
 .footerMenu {
   margin-top: auto; 
   padding: 2rem;
 }
-
 .logoutLink {
   display: flex;
   align-items: center;
@@ -103,11 +87,9 @@
   font-size: 0.95rem;
   transition: color 0.2s;
 }
-
 .logoutLink:hover {
   color: var(--brand-red);
 }
-
 .mainContent {
   flex: 1;
   padding: 2.5rem;

@@ -3,19 +3,16 @@
   flex-direction: column;
   gap: 2rem;
 }
-
 .pageTitle {
   font-size: 1.8rem;
   margin: 0;
   color: var(--brand-blue);
 }
-
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 }
-
 .metricCard {
   background-color: var(--bg-main);
   padding: 1.5rem;
@@ -24,26 +21,22 @@
   border-left: 5px solid var(--brand-red);
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
-
 .metricCard h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
   color: var(--text-muted);
 }
-
 .metricValue {
   margin: 0;
   font-size: 2.2rem;
   font-weight: bold;
   color: var(--brand-blue);
 }
-
 .chartsArea {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 1.5rem;
 }
-
 .chartBox {
   background-color: var(--bg-main);
   padding: 1.5rem;
@@ -54,13 +47,11 @@
   flex-direction: column;
   gap: 1.5rem;
 }
-
 .chartBox h3 {
   margin: 0;
   color: var(--brand-blue);
   font-size: 1.2rem;
 }
-
 .placeholder {
   flex: 1;
   min-height: 250px;

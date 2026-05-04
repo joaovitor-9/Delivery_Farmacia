@@ -1,6 +1,6 @@
 'use client'
 
-import { Trash2 } from 'lucide-react'; // Importando o ícone da biblioteca instalada
+import { Trash2 } from 'lucide-react';
 import styles from './carrinho.module.css';
 
 const ITENS_CARRINHO = [
@@ -53,7 +53,6 @@ export default function Carrinho() {
                   <button className={styles.qtyBtn}>+</button>
                 </div>
 
-                {/* Ícone trocado aqui para Trash2 */}
                 <button className={styles.removeBtn}>
                   <Trash2 size={20} color="#94a3b8" strokeWidth={1.5} />
                 </button>

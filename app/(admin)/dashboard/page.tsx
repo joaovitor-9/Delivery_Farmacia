@@ -29,8 +29,7 @@ export default function DashboardPage() {
   return (
     <div className={styles.dashboardContainer}>
       <h1 className={styles.pageTitle}>Visão Geral de Vendas</h1>
-      
-      {/* Cards de Métricas */}
+       
       <div className={styles.metricsGrid}>
         <div className={styles.metricCard}>
           <h3>Vendas Hoje</h3>
@@ -50,10 +49,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Área de Gráficos */}
       <div className={styles.chartsArea}>
         
-        {/* Gráfico de Linha */}
         <div className={styles.chartBox}>
           <h3>Faturamento Semanal</h3>
           <div style={{ width: '100%', height: 300, marginTop: '1rem' }}>
@@ -72,7 +69,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Gráfico de Barras */}
         <div className={styles.chartBox}>
           <h3>Produtos Mais Vendidos</h3>
           <div style={{ width: '100%', height: 300, marginTop: '1rem' }}>
