@@ -49,12 +49,14 @@ Interações dos atores (Cliente/Administrador) com as funcionalidades centrais 
 ---
 
 ##💻 Pré-requisitos
+
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 Você instalou a versão estável mais recente do Node.js e NPM.
 
 Você tem uma máquina Windows, Linux ou Mac.
 
+---
 
 ##🚀 Instalando Farmácia Delivery 
 Para instalar o Farmácia Delivery , siga estas etapas:
