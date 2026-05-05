@@ -48,7 +48,7 @@ Interações dos atores (Cliente/Administrador) com as funcionalidades centrais 
 
 ---
 
-##💻 Pré-requisitos
+## 💻 Pré-requisitos
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
@@ -58,22 +58,22 @@ Você tem uma máquina Windows, Linux ou Mac.
 
 ---
 
-##🚀 Instalando Farmácia Delivery 
+## 🚀 Instalando Farmácia Delivery 
 Para instalar o Farmácia Delivery , siga estas etapas:
 
 Linux, macOS e Windows:
 
 Bash
-# Clone o repositório
+### Clone o repositório
 git clone https://github.com/joaovitor-9/Delivery_Farmacia.git
 
-# Acesse a pasta
+### Acesse a pasta
 cd Delivery_Farmacia
 
-# Instale as dependências
+### Instale as dependências
 npm install
 
-# Inicie o servidor
+### Inicie o servidor
 npm run dev
 Acesse http://localhost:3000 no seu navegador para ver o resultado.
 
