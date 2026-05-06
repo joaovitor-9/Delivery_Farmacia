@@ -6,7 +6,7 @@
 ![CSS Modules](https://img.shields.io/badge/CSS_Modules-1572B6?logo=css3&logoColor=white)
 
 Um sistema web completo de e-commerce e gestão de pedidos para farmácias. Este projeto funciona como um MVP (Minimum Viable Product) e foi projetado com uma arquitetura moderna, separando a experiência do cliente final do painel de controle administrativo.
----
+
 ## ✨ Funcionalidades
 
 O sistema é dividido em duas grandes áreas (Rotas separadas no Next.js):
@@ -56,7 +56,7 @@ Para instalar o Farmácia Delivery , siga estas etapas:
 
 Linux, macOS e Windows:
 
-Bash
+```Bash
 ### Clone o repositório
 git clone https://github.com/joaovitor-9/Delivery_Farmacia.git
 
@@ -69,4 +69,22 @@ npm install
 ### Inicie o servidor
 npm run dev
 Acesse http://localhost:3000 no seu navegador para ver o resultado.
+```
+## 🔐 Acesso ao Sistema
+
+### 🛒 Área do Cliente
+Para simular o login do cliente:
+* **Usuário:** cliente@gmail.com
+* **Senha:** 123
+
+### 💼 Painel Administrativo
+Para simular o login do funcionário:
+* **Usuário:** admin
+* **Senha:** 123
+
+## 🤝 Colaboradores
+
+* [Elias Manuel Fonseca Moreira](https://github.com/elias445) - Desenvolvedor
+* [João Vitor Farias de Amorim](https://github.com/joaovitor-9) - Desenvolvedor
+
 
