@@ -68,6 +68,7 @@ npm install
 
 ### Inicie o servidor
 npm run dev
+
 Acesse http://localhost:3000 no seu navegador para ver o resultado.
 ```
 ## 🔐 Acesso ao Sistema
