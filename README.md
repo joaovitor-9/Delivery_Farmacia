@@ -31,9 +31,6 @@ O sistema é dividido em duas grandes áreas (Rotas separadas no Next.js):
 * **Ícones:** [Lucide React](https://lucide.dev/) (ícones vetoriais modernos).
 * **Gráficos e Dashboards:** [Recharts](https://recharts.org/) (visualização de dados no painel administrativo).
 
-
----
-
 ## 🎨 Planejamento Visual e Funcional
 
 ### Prototipação (Baixa Fidelidade)
@@ -46,8 +43,6 @@ Interações dos atores (Cliente/Administrador) com as funcionalidades centrais 
 
 ![Diagrama de Caso de Uso](./docs/diagrama-casos-de-uso.png)
 
----
-
 ## 💻 Pré-requisitos
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
@@ -55,8 +50,6 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 Você instalou a versão estável mais recente do Node.js e NPM.
 
 Você tem uma máquina Windows, Linux ou Mac.
-
----
 
 ## 🚀 Instalando Farmácia Delivery 
 Para instalar o Farmácia Delivery , siga estas etapas:
