@@ -53,7 +53,7 @@ export default function Perfil() {
         <div className={styles.row}>
           <p><strong>Cartão de Débito **** 1010</strong></p>
           <CreditCard size={20} color="#64748b" />
-        </div>
+        </div>  
       </div>
 
       <button className={styles.logoutBtn} onClick={handleLogout}>
