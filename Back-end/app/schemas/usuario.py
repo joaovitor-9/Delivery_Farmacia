@@ -6,3 +6,4 @@ class UsuarioBase(BaseModel):
     nome: str
     email: str
     senha: str 
+    cpf: str

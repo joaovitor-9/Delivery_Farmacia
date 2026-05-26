@@ -1,0 +1,66 @@
+@startuml
+
+abstract class Usuario {
+  +String id
+  +String nome
+  +String email
+  +String senha
+  +String cpf
+  +Boolean autenticar(String senhaDigitada)
+}
+
+class Cliente {
+  +String telefone
+}
+
+class Funcionario {
+  +String cargo
+}
+
+class Endereco {
+  +String id
+  +String usuarioId
+  +String logradouro
+  +String numero
+  +String bairro
+  +String cidade
+  +String cep
+}
+
+class Produto {
+  +String id
+  +String nome
+  +Float preco
+  +Int estoque
+  +String categoria
+  +Boolean verificarDisponibilidade(Int quantidade)
+  +void baixarEstoque(Int quantidade)
+}
+
+class Pedido {
+  +String id
+  +String clienteId
+  +String status
+  +Float valorTotal
+  +DateTime dataCriacao
+  +void calcularTotal()
+  +void atualizarStatus(String novoStatus)
+}
+
+class ItemPedido {
+  +String id
+  +String pedidoId
+  +String produtoId
+  +Int quantidade
+  +Float preco
+  +Float calcularSubtotal()
+}
+
+Usuario <|-- Cliente
+Usuario <|-- Funcionario
+Usuario "1" -- "0..*" Endereco
+Cliente "1" -- "0..*" Pedido
+Pedido "1" *-- "1..*" ItemPedido
+Produto "1" -- "0..*" ItemPedido
+
+@enduml

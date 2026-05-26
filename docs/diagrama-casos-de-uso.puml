@@ -13,12 +13,20 @@ rectangle "Sistema Delivery de Farmácia" {
     usecase "Acompanhar Status" as UC4
     usecase "Atualizar Status do Pedido" as UC5
     usecase "Visualizar Painel de Pedidos" as UC6
+    usecase "Cadastrar-se no Sistema" as UC7
+    usecase "Visualizar Histórico de Pedidos" as UC8
+    usecase "Cancelar Pedido" as UC9
+    usecase "Gerenciar Endereços" as UC10
 }
 
 cliente --> UC1
 cliente --> UC2
 cliente --> UC3
 cliente --> UC4
+cliente --> UC7
+cliente --> UC8
+cliente --> UC9
+cliente --> UC10
 
 admin --> UC5
 admin --> UC6
