@@ -1,0 +1,93 @@
+.kanbanWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.pageTitle {
+  color: var(--brand-blue);
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+.kanbanBoard {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  align-items: flex-start; 
+}
+.coluna {
+  flex: 1;
+  min-width: 200px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  height: auto; 
+  min-height: 100px; 
+}
+.colunaHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.tituloColuna {
+  font-size: 0.95rem;
+  color: var(--brand-blue);
+  font-weight: 700;
+  margin: 0;
+}
+.contador {
+  background-color: var(--brand-yellow);
+  color: var(--text-main);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.listaCards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+.card {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.cardHeader h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--brand-blue);
+}
+.cardHeader p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+.cardBody .item {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.cardFooter {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--brand-blue);
+  font-weight: bold;
+}

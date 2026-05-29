@@ -1,0 +1,16 @@
+/* app/globals.css */
+:root {
+  --brand-red: #e31b23;
+  --brand-blue: #1e1b4b;
+  --brand-yellow: #ffcc00;
+  --bg-main: #ffffff;      
+  --bg-card: #f8fafc;      
+  --text-main: #1e293b;    
+  --text-muted: #64748b;   
+  --border: #e2e8f0;      
+}
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+}
