@@ -1,9 +1,19 @@
-import uuid
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from typing import Optional
 
 class UsuarioBase(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     nome: str
     email: str
     senha: str 
     cpf: str
+    telefone: Optional[str] = None
+
+class Usuario(BaseModel):
+    id: str
+    nome: str
+    email: str
+    cpf: str
+    telefone: Optional[str] = None
+
+    class Config:
+        from_attributes = True
