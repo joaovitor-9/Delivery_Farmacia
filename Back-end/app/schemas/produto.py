@@ -1,14 +1,15 @@
-# app/models/produto.py
-from sqlalchemy import Column, String, Float, Integer
-from app.database import Base
-import uuid
+from pydantic import BaseModel
+from typing import Optional
 
-class ProdutoModel(Base):
-    __tablename__ = "produtos"
+class ProdutoBase(BaseModel):
+    nome: str
+    descricao: Optional[str] = None
+    preco: float
+    estoque: int
+    categoria: Optional[str] = None
 
-    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    nome = Column(String, nullable=False)
-    descricao = Column(String)
-    preco = Column(Float, nullable=False)
-    estoque = Column(Integer, default=0)
-    categoria = Column(String, nullable=False)
+class Produto(ProdutoBase):
+    id: str
+
+    class Config:
+        from_attributes = True
