@@ -1,18 +1,27 @@
 'use client'
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import styles from './home.module.css';
-
-const MEDICAMENTOS = [
-  { id: 1, nome: "Dipirona 500mg - 10 Comprimidos", preco: "R$ 9,90"},
-  { id: 2, nome: "Dorflex 36 Comprimidos", preco: "R$ 22,50"},
-  { id: 3, nome: "Neosaldina 20 Drágeas", preco: "R$ 29,90"},
-  { id: 4, nome: "Vitamina C Cenevit 1g", preco: "R$ 18,90"},
-  { id: 5, nome: "Ibuprofeno 600mg", preco: "R$ 15,00"},
-];
 
 export default function Home() {
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  
+  const [medicamentos, setMedicamentos] = useState<any[]>([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/produtos')
+      .then(resposta => resposta.json())
+      .then(dados => {
+        setMedicamentos(dados); 
+        setCarregando(false);
+      })
+      .catch(erro => {
+        console.error("Erro ao buscar produtos:", erro);
+        setCarregando(false);
+      });
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -33,16 +42,23 @@ export default function Home() {
         <button className={`${styles.arrow} ${styles.right}`} onClick={() => scroll('right')}>❯</button>
 
         <div className={styles.carousel} ref={carouselRef}>
-          {MEDICAMENTOS.map((m) => (
-            <div key={m.id} className={styles.card}>
-              <div className={styles.imageArea}>
-                <span style={{ fontSize: '40px' }}></span>
+          {carregando ? (
+            <p style={{ padding: '20px' }}>Carregando prateleiras...</p>
+          ) : (
+            medicamentos.map((m) => (
+              <div key={m.id} className={styles.card}>
+                <div className={styles.imageArea}>
+                  <span style={{ fontSize: '40px' }}></span>
+                </div>
+                <h3 className={styles.productName}>{m.nome}</h3>
+                
+              
+                <p className={styles.price}>R$ {m.preco.toFixed(2).replace('.', ',')}</p>
+                
+                <button className={styles.addBtnSquare}>+</button>
               </div>
-              <h3 className={styles.productName}>{m.nome}</h3>
-              <p className={styles.price}>{m.preco}</p>
-              <button className={styles.addBtnSquare}>+</button>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
     </main>

@@ -7,16 +7,19 @@ actor "Cliente" as cliente
 actor "Funcionário (Admin)" as admin
 
 rectangle "Sistema Delivery de Farmácia" {
-    usecase "Realizar Pedido" as UC1
+    usecase "Realizar Pedido" as UC1 
     usecase "Gerenciar Carrinho" as UC2
-    usecase "Buscar Produtos" as UC3
-    usecase "Acompanhar Status" as UC4
-    usecase "Atualizar Status do Pedido" as UC5
+    usecase "Buscar Produtos" as UC3 
+    usecase "Acompanhar Status" as UC4 
+    usecase "Atualizar Status do Pedido" as UC5 
     usecase "Visualizar Painel de Pedidos" as UC6
-    usecase "Cadastrar-se no Sistema" as UC7
-    usecase "Visualizar Histórico de Pedidos" as UC8
-    usecase "Cancelar Pedido" as UC9
+    usecase "Cadastrar-se no Sistema" as UC7 
+    usecase "Visualizar Histórico de Pedidos" as UC8 
+    usecase "Cancelar Pedido" as UC9 
     usecase "Gerenciar Endereços" as UC10
+    usecase "Deletar Produtos" as UC11
+    usecase "Atualizar Produtos" as UC12
+    usecase "Cadastrar Produtos" as UC13
 }
 
 cliente --> UC1
@@ -30,5 +33,8 @@ cliente --> UC10
 
 admin --> UC5
 admin --> UC6
+admin --> UC11
+admin --> UC12
+admin --> UC13
 
 @enduml

@@ -9,6 +9,8 @@ from app.models.produto import ProdutoModel
 from app.models.pedido import PedidoModel
 from app.models.item_pedido import ItemPedidoModel
 from app.models.funcionario import FuncionarioModel
+from fastapi.middleware.cors import CORSMiddleware
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -50,13 +52,22 @@ app = FastAPI(
     description="Back-end estruturado em Casos de Uso para controle de estoque, clientes e vendas.",
     version="1.0.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"], # Permite GET, POST, PUT, DELETE
+    allow_headers=["*"],
+)
+
 @app.get("/produtos", response_model=List[Produto], tags=["Produtos"])
 def listar_produtos(
     nome: Optional[str] = Query(None, description="Filtrar produto por nome"),
     categoria: Optional[str] = Query(None, description="Filtrar produto por categoria"),
     db: Session = Depends(get_db)
 ):
-    return buscar_produtos(db=db, nome=nome, category=categoria)
+    return buscar_produtos(db=db, nome=nome, categoria=categoria)
 
 @app.get("/produtos/{produto_id}", response_model=Produto, tags=["Produtos"])
 def obter_produto_por_id(produto_id: str, db: Session = Depends(get_db)):
