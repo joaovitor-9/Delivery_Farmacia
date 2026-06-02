@@ -20,6 +20,8 @@ rectangle "Sistema Delivery de Farmácia" {
     usecase "Deletar Produtos" as UC11
     usecase "Atualizar Produtos" as UC12
     usecase "Cadastrar Produtos" as UC13
+    usecase "Adicionar Produtos no Carrinho" as UC14
+
 }
 
 cliente --> UC1
@@ -30,6 +32,7 @@ cliente --> UC7
 cliente --> UC8
 cliente --> UC9
 cliente --> UC10
+cliente --> UC14
 
 admin --> UC5
 admin --> UC6

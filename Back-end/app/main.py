@@ -23,14 +23,12 @@ from app.use_cases.cadastrar_usuario import cadastrar_usuario
 from app.use_cases.buscar_usuarios import buscar_usuarios 
 from app.use_cases.buscar_usuario_por_id import buscar_usuario_por_id
 from app.use_cases.atualizar_usuario import atualizar_usuario
-from app.use_cases.deletar_usuario import deletar_usuario
 
 #Casos de Uso: Pedidos
 from app.use_cases.realizar_pedido import realizar_pedido
 from app.use_cases.buscar_pedidos import buscar_pedidos
 from app.use_cases.buscar_pedido_por_id import buscar_pedido_por_id
 from app.use_cases.atualizar_status_pedido import atualizar_status_pedido
-from app.use_cases.deletar_pedido import deletar_pedido
 
 
 Base.metadata.create_all(bind=engine)
@@ -104,10 +102,6 @@ def cadastrar_usuario(usuario: UsuarioBase, db: Session = Depends(get_db)):
 def modificar_usuario(usuario_id: str, usuario: UsuarioBase, db: Session = Depends(get_db)):
     return atualizar_usuario(db=db, usuario_id=usuario_id, dados_atualizados=usuario)
 
-@app.delete("/usuarios/{usuario_id}", tags=["Usuários"])
-def remover_usuario(usuario_id: str, db: Session = Depends(get_db)):
-    return deletar_usuario(db=db, usuario_id=usuario_id)
-
 @app.post("/pedidos", status_code=201, tags=["Pedidos"])
 def cadastrar_pedido(pedido_dados: PedidoCriarSchema, db: Session = Depends(get_db)):
     return realizar_pedido(
@@ -132,7 +126,3 @@ def obter_pedido_especifico(pedido_id: str, db: Session = Depends(get_db)):
 @app.put("/pedidos/{pedido_id}/status", tags=["Pedidos"])
 def modificar_status_pedido(pedido_id: str, novo_status: str = Query(...), db: Session = Depends(get_db)):
     return atualizar_status_pedido(db=db, pedido_id=pedido_id, novo_status=novo_status)
-
-@app.delete("/pedidos/{pedido_id}", tags=["Pedidos"])
-def cancelar_pedido(pedido_id: str, db: Session = Depends(get_db)):
-    return deletar_pedido(db=db, pedido_id=pedido_id)

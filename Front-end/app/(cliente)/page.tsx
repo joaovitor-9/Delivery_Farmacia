@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import styles from './home.module.css';
 import BotaoComprar from '@/componentes/botaoComprar'; 
 
@@ -9,6 +10,9 @@ export default function Home() {
   
   const [medicamentos, setMedicamentos] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
+
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q')?.toLowerCase() || '';
 
   useEffect(() => {
     
@@ -34,19 +38,33 @@ export default function Home() {
     }
   };
 
+  const medicamentosFiltrados = medicamentos.filter((m) =>
+    m.nome.toLowerCase().includes(query)
+  );
+
   return (
     <main className={styles.container}>
       <section className={styles.carouselWrapper}>
-        <h2 className={styles.sectionTitle}>Medicamentos</h2>
+        <h2 className={styles.sectionTitle}>
+          {query ? `Resultados para "${query}"` : 'Medicamentos'}
+        </h2>
         
-        <button className={`${styles.arrow} ${styles.left}`} onClick={() => scroll('left')}>❮</button>
-        <button className={`${styles.arrow} ${styles.right}`} onClick={() => scroll('right')}>❯</button>
+        {medicamentosFiltrados.length > 0 && (
+          <>
+            <button className={`${styles.arrow} ${styles.left}`} onClick={() => scroll('left')}>❮</button>
+            <button className={`${styles.arrow} ${styles.right}`} onClick={() => scroll('right')}>❯</button>
+          </>
+        )}
 
         <div className={styles.carousel} ref={carouselRef}>
           {carregando ? (
             <p style={{ padding: '20px' }}>Carregando prateleiras...</p>
+          ) : medicamentosFiltrados.length === 0 ? (
+            <p style={{ padding: '20px', color: '#64748b' }}>
+              Nenhum produto encontrado para sua busca.
+            </p>
           ) : (
-            medicamentos.map((m) => (
+            medicamentosFiltrados.map((m) => (
               <div key={m.id} className={styles.card}>
                 <div className={styles.imageArea}>
                   <span style={{ fontSize: '40px' }}></span>
