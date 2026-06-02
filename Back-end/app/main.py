@@ -11,6 +11,27 @@ from app.models.item_pedido import ItemPedidoModel
 from app.models.funcionario import FuncionarioModel
 from fastapi.middleware.cors import CORSMiddleware
 
+#Casos de Uso: Produtos
+from app.use_cases.cadastrar_produto import cadastrar_produto 
+from app.use_cases.buscar_produtos import buscar_produtos
+from app.use_cases.buscar_produto_por_id import buscar_produto_por_id
+from app.use_cases.atualizar_produto import atualizar_produto
+from app.use_cases.deletar_produto import deletar_produto
+
+#Casos de Uso: Usuários
+from app.use_cases.cadastrar_usuario import cadastrar_usuario
+from app.use_cases.buscar_usuarios import buscar_usuarios 
+from app.use_cases.buscar_usuario_por_id import buscar_usuario_por_id
+from app.use_cases.atualizar_usuario import atualizar_usuario
+from app.use_cases.deletar_usuario import deletar_usuario
+
+#Casos de Uso: Pedidos
+from app.use_cases.realizar_pedido import realizar_pedido
+from app.use_cases.buscar_pedidos import buscar_pedidos
+from app.use_cases.buscar_pedido_por_id import buscar_pedido_por_id
+from app.use_cases.atualizar_status_pedido import atualizar_status_pedido
+from app.use_cases.deletar_pedido import deletar_pedido
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -26,27 +47,6 @@ class PedidoCriarSchema(BaseModel):
     endereco_id: str
     itens: List[ItemCarrinhoSchema]
 
-from app.use_cases.produto_uc import (
-    criar_produto,
-    buscar_produtos,
-    buscar_produto_por_id,
-    atualizar_produto,
-    deletar_produto
-)
-from app.use_cases.usuario_uc import (
-    cadastrar_usuario,
-    buscar_usuarios,
-    buscar_usuario_por_id,
-    atualizar_usuario,
-    deletar_usuario
-)
-from app.use_cases.pedido_uc import (
-    realizar_pedido,
-    buscar_pedidos,
-    buscar_pedido_por_id,
-    atualizar_status_pedido,
-    deletar_pedido
-)
 app = FastAPI(
     title="Farmácia Delivery API",
     description="Back-end estruturado em Casos de Uso para controle de estoque, clientes e vendas.",
@@ -57,7 +57,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"], # Permite GET, POST, PUT, DELETE
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -74,8 +74,8 @@ def obter_produto_por_id(produto_id: str, db: Session = Depends(get_db)):
     return buscar_produto_por_id(db=db, produto_id=produto_id)
 
 @app.post("/produtos", response_model=Produto, status_code=201, tags=["Produtos"])
-def cadastrar_produto(produto: ProdutoBase, db: Session = Depends(get_db)):
-    return criar_produto(db=db, produto=produto)
+def cadastrar_produto_rota(produto: ProdutoBase, db: Session = Depends(get_db)):
+    return cadastrar_produto(db=db, produto=produto)
 
 @app.put("/produtos/{produto_id}", response_model=Produto, tags=["Produtos"])
 def modificar_produto(produto_id: str, produto: ProdutoBase, db: Session = Depends(get_db)):

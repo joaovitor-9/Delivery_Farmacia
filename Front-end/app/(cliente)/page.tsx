@@ -2,15 +2,16 @@
 
 import { useRef, useState, useEffect } from 'react';
 import styles from './home.module.css';
+import BotaoComprar from '@/componentes/botaoComprar'; 
 
 export default function Home() {
   const carouselRef = useRef<HTMLDivElement>(null);
-
   
   const [medicamentos, setMedicamentos] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
+    
     fetch('http://127.0.0.1:8000/produtos')
       .then(resposta => resposta.json())
       .then(dados => {
@@ -52,10 +53,13 @@ export default function Home() {
                 </div>
                 <h3 className={styles.productName}>{m.nome}</h3>
                 
-              
                 <p className={styles.price}>R$ {m.preco.toFixed(2).replace('.', ',')}</p>
                 
-                <button className={styles.addBtnSquare}>+</button>
+                <BotaoComprar 
+                  produtoId={m.id} 
+                  nome={m.nome} 
+                  preco={m.preco} 
+                />
               </div>
             ))
           )}
