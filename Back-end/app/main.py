@@ -23,6 +23,7 @@ from app.use_cases.cadastrar_usuario import cadastrar_usuario
 from app.use_cases.buscar_usuarios import buscar_usuarios 
 from app.use_cases.buscar_usuario_por_id import buscar_usuario_por_id
 from app.use_cases.atualizar_usuario import atualizar_usuario
+from app.use_cases.fazer_login import fazer_login
 
 #Casos de Uso: Pedidos
 from app.use_cases.realizar_pedido import realizar_pedido
@@ -44,6 +45,10 @@ class PedidoCriarSchema(BaseModel):
     cliente_id: str
     endereco_id: str
     itens: List[ItemCarrinhoSchema]
+
+class LoginSchema(BaseModel):
+    email: str
+    senha: str
 
 app = FastAPI(
     title="Farmácia Delivery API",
@@ -95,7 +100,7 @@ def obter_usuario_por_id(usuario_id: str, db: Session = Depends(get_db)):
     return buscar_usuario_por_id(db=db, usuario_id=usuario_id)
 
 @app.post("/usuarios", response_model=Usuario, status_code=201, tags=["Usuários"])
-def cadastrar_usuario(usuario: UsuarioBase, db: Session = Depends(get_db)):
+def cadastrar_usuario_rota(usuario: UsuarioBase, db: Session = Depends(get_db)):
     return cadastrar_usuario(db=db, usuario=usuario)
 
 @app.put("/usuarios/{usuario_id}", response_model=Usuario, tags=["Usuários"])
@@ -126,3 +131,13 @@ def obter_pedido_especifico(pedido_id: str, db: Session = Depends(get_db)):
 @app.put("/pedidos/{pedido_id}/status", tags=["Pedidos"])
 def modificar_status_pedido(pedido_id: str, novo_status: str = Query(...), db: Session = Depends(get_db)):
     return atualizar_status_pedido(db=db, pedido_id=pedido_id, novo_status=novo_status)
+
+@app.post("/login", tags=["Autenticação"])
+def fazer_login_rota(dados: LoginSchema, db: Session = Depends(get_db)):
+    usuario = fazer_login(db=db, email=dados.email, senha=dados.senha)
+    return {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "tipo_usuario": usuario.tipo_usuario
+    }

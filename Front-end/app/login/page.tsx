@@ -5,10 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './login.module.css';
 
-const CLIENTES_MOCK = [
-  { email: 'cliente@gmail.com', senha: '123', nome: 'João Elias' }
-];
-
 const FUNCIONARIOS_MOCK = [
   { usuario: 'admin', senha: '123', nome: 'Administrador' },
 ];
@@ -20,17 +16,37 @@ export default function Login() {
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
 
     if (tipoLogin === 'cliente') {
-      const user = CLIENTES_MOCK.find(c => c.email === identificacao && c.senha === senha);
-      if (user) {
-        localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: 'cliente' }));
+      try {
+        console.log("Enviando requisição para a API..."); 
+        
+        const response = await fetch("http://localhost:8000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ 
+            email: identificacao, 
+            senha: senha 
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || "Erro ao tentar fazer login.");
+        }
+
+        const user = await response.json();
+        
+        localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: user.tipo_usuario }));
         window.location.href = '/'; 
-      } else {
-        setErro('E-mail ou senha incorretos.');
+
+      } catch (err: any) {
+        setErro(err.message);
       }
     } else {
       const func = FUNCIONARIOS_MOCK.find(f => f.usuario === identificacao && f.senha === senha);
@@ -93,6 +109,9 @@ export default function Login() {
         </form>
 
         <div className={styles.footer}>
+          {tipoLogin === 'cliente' && (
+             <Link href="/cadastro" className={styles.backLink}>Não possui login? Criar conta</Link>
+          )}
           <Link href="/" className={styles.backLink}>← Voltar para a loja</Link>
         </div>
       </div>

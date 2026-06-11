@@ -25,34 +25,6 @@
   object-fit: contain;
   margin-bottom: 10px;
 }
-.header p {
-  color: #64748b;
-  font-size: 14px;
-}
-.toggleContainer {
-  display: flex;
-  background-color: #f1f5f9;
-  border-radius: 8px;
-  padding: 5px;
-  margin-bottom: 25px;
-}
-.toggleBtn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #64748b;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.active {
-  background: white !important;
-  color: var(--brand-blue, #1e1b4b) !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
 .form {
   display: flex;
   flex-direction: column;
@@ -103,6 +75,10 @@
 }
 .submitBtn:hover {
   opacity: 0.9;
+}
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 .footer {
   margin-top: 25px;
