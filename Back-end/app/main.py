@@ -3,12 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from pydantic import BaseModel
 from app.database import get_db, engine, Base
-from app.models.usuario import UsuarioModel
-from app.models.endereco import EnderecoModel
-from app.models.produto import ProdutoModel
-from app.models.pedido import PedidoModel
-from app.models.item_pedido import ItemPedidoModel
-from app.models.funcionario import FuncionarioModel
+from app.schemas.endereco import EnderecoCriar
 from fastapi.middleware.cors import CORSMiddleware
 
 #Casos de Uso: Produtos
@@ -30,6 +25,9 @@ from app.use_cases.realizar_pedido import realizar_pedido
 from app.use_cases.buscar_pedidos import buscar_pedidos
 from app.use_cases.buscar_pedido_por_id import buscar_pedido_por_id
 from app.use_cases.atualizar_status_pedido import atualizar_status_pedido
+
+# Casos de Uso: Endereços
+from app.use_cases.criar_endereco import criar_endereco
 
 
 Base.metadata.create_all(bind=engine)
@@ -141,3 +139,8 @@ def fazer_login_rota(dados: LoginSchema, db: Session = Depends(get_db)):
         "email": usuario.email,
         "tipo_usuario": usuario.tipo_usuario
     }
+
+@app.post("/enderecos", status_code=201, tags=["Endereços"])
+def cadastrar_endereco_rota(endereco: EnderecoCriar, db: Session = Depends(get_db)):
+    novo_endereco = criar_endereco(db=db, endereco=endereco)
+    return {"id": novo_endereco.id, "mensagem": "Endereço salvo com sucesso"}

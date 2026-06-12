@@ -42,7 +42,12 @@ export default function Login() {
 
         const user = await response.json();
         
-        localStorage.setItem('user', JSON.stringify({ nome: user.nome, tipo: user.tipo_usuario }));
+        localStorage.setItem('user', JSON.stringify({ 
+          id: user.id, 
+          nome: user.nome, 
+          tipo: user.tipo_usuario 
+        }));
+        
         window.location.href = '/'; 
 
       } catch (err: any) {

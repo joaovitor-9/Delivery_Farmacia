@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+from typing import Optional
 from app.database import Base
 import uuid
 
@@ -12,6 +13,7 @@ class EnderecoModel(Base):
     bairro = Column(String, nullable=False)
     cidade = Column(String, nullable=False)
     cep = Column(String, nullable=False)
+    complemento = Column(String, nullable=True)
     
     usuario_id = Column(String, ForeignKey("usuarios.id"))
     

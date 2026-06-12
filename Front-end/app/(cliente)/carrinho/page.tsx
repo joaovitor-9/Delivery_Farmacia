@@ -16,12 +16,22 @@ export default function Carrinho() {
   const [carregando, setCarregando] = useState(true);
   
   const [endereco, setEndereco] = useState({
-    cep: '', logradouro: '', numero: '', bairro: '', complemento: ''
+    cep: '', logradouro: '', numero: '', bairro: '', cidade: '', complemento: ''
   });
+
+  // CORREÇÃO 1: Adicionamos o estado para guardar o ID do cliente
+  const [clienteId, setClienteId] = useState<string>('');
 
   useEffect(() => {
     const carrinhoSalvo = JSON.parse(localStorage.getItem('carrinho') || '[]');
     setItensCarrinho(carrinhoSalvo);
+
+    const usuarioSalvo = localStorage.getItem('user');
+    if (usuarioSalvo) {
+      const usuario = JSON.parse(usuarioSalvo);
+      setClienteId(usuario.id); 
+    }
+
     setCarregando(false);
   }, []);
 
@@ -49,42 +59,75 @@ export default function Carrinho() {
   };
 
   const handleFinalizarCompra = async () => {
+    // CORREÇÃO 2: Trava de segurança. Se não tiver ID (não logou), ele barra a compra!
+    if (!clienteId) {
+      alert("Você precisa fazer login antes de finalizar a compra!");
+      return;
+    }
+
     if (itensCarrinho.length === 0) {
       alert("Seu carrinho está vazio!");
       return;
     }
 
-    if (!endereco.cep || !endereco.logradouro || !endereco.numero) {
-      alert("Por favor, preencha os campos obrigatórios do endereço (CEP, Rua e Número).");
+    if (!endereco.cep || !endereco.logradouro || !endereco.numero || !endereco.cidade) {
+      alert("Por favor, preencha os campos obrigatórios do endereço (CEP, Rua, Número e Cidade).");
       return;
     }
 
-    const dadosPedido = {
-      cliente_id: "ID-CLIENTE-TESTE", 
-      endereco_id: "ID-ENDERECO-TESTE", 
-      itens: itensCarrinho.map(item => ({
-        produto_id: item.produto_id,
-        quantidade: item.quantidade
-      }))
-    };
-
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`, {
+      const dadosEndereco = {
+        cliente_id: clienteId, // CORREÇÃO 3: Agora é automático!
+        cep: endereco.cep,
+        logradouro: endereco.logradouro,
+        numero: endereco.numero,
+        bairro: endereco.bairro,
+        cidade: endereco.cidade,
+        complemento: endereco.complemento
+      };
+
+      const resEndereco = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enderecos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosEndereco)
+      });
+
+      if (!resEndereco.ok) {
+        const erroEnd = await resEndereco.json();
+        console.error("Erro ao salvar endereço:", erroEnd);
+        alert("Erro no Endereço:\n" + JSON.stringify(erroEnd.detail || erroEnd));
+        return; 
+      }
+
+      const respostaEnderecoBanco = await resEndereco.json();
+      const idDoEnderecoReal = respostaEnderecoBanco.id; 
+
+      const dadosPedido = {
+        cliente_id: clienteId, // CORREÇÃO 3: Automático aqui também!
+        endereco_id: idDoEnderecoReal, 
+        itens: itensCarrinho.map(item => ({
+          produto_id: item.produto_id,
+          quantidade: item.quantidade
+        }))
+      };
+
+      const resPedido = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosPedido)
       });
 
-      if (res.ok) {
+      if (resPedido.ok) {
         alert("Pedido realizado com sucesso!");
         localStorage.removeItem('carrinho');
         setItensCarrinho([]);
       } else {
-        const erro = await res.json();
-        alert("Erro na API: " + erro.detail);
+        const erroPedido = await resPedido.json();
+        console.error("Erro detalhado do Pedido:", erroPedido);
+        alert("O Back-end recusou o pedido. Motivo:\n\n" + JSON.stringify(erroPedido.detail || erroPedido, null, 2));
       }
     } catch (error) {
-      console.error("Erro ao enviar pedido:", error);
+      console.error("Erro no fluxo de checkout:", error);
       alert("Erro de conexão. Verifique se o back-end está rodando.");
     }
   };
@@ -188,6 +231,15 @@ export default function Carrinho() {
                     onChange={(e) => setEndereco({...endereco, bairro: e.target.value})}
                   />
                 </div>
+              </div>
+              <div className={styles.inputGroup}>
+                <label>Cidade</label>
+                <input 
+                  type="text" 
+                  placeholder="Ex: Surubim"
+                  value={endereco.cidade}
+                  onChange={(e) => setEndereco({...endereco, cidade: e.target.value})}
+                />
               </div>
               <div className={styles.inputGroup}>
                 <label>Complemento (Opcional)</label>
