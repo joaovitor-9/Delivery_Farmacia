@@ -1,4 +1,5 @@
 import uuid
+from app.schemas.produto import Produto
 from pydantic import BaseModel, Field
 
 class ItemPedido(BaseModel):
@@ -6,3 +7,7 @@ class ItemPedido(BaseModel):
     produto_id: str
     quantidade: int
     preco_unitario: float
+    produto: Optional[Produto] = None 
+
+    class Config:
+        from_attributes = True
