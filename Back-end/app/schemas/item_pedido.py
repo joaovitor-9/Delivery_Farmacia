@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 from app.schemas.produto import Produto
 from pydantic import BaseModel, Field
 
