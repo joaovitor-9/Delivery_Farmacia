@@ -2,7 +2,7 @@
   width: 100%;
   background-color: #1e1b4b; 
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  min-height: 140px; 
+  min-height: 160px; 
   display: flex;
   align-items: center;
 }
