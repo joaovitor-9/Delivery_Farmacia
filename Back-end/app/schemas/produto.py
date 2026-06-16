@@ -7,6 +7,8 @@ class ProdutoBase(BaseModel):
     preco: float
     estoque: int
     categoria: Optional[str] = None
+    subcategoria: Optional[str] = None
+    imagem_url: Optional[str] = None
 
 class Produto(ProdutoBase):
     id: str

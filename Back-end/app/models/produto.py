@@ -11,3 +11,5 @@ class ProdutoModel(Base):
     preco = Column(Float)
     estoque = Column(Integer)
     categoria = Column(String)
+    subcategoria = Column(String, nullable=True)
+    imagem_url = Column(String, nullable=True)

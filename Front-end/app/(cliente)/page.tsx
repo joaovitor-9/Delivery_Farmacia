@@ -1,25 +1,26 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import styles from './home.module.css';
-import BotaoComprar from '@/componentes/botaoComprar'; 
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import styles from './home.module.css'; 
+import SecaoCarrossel from '@/componentes/secaoCarrossel';
 
 export default function Home() {
-  const carouselRef = useRef<HTMLDivElement>(null);
-  
-  const [medicamentos, setMedicamentos] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const query = searchParams.get('q')?.toLowerCase() || '';
+  
+  const filtroAtual = searchParams.get('filtro') || 'Todos';
 
   useEffect(() => {
-    
     fetch('http://127.0.0.1:8000/produtos')
       .then(resposta => resposta.json())
       .then(dados => {
-        setMedicamentos(dados); 
+        setProdutos(dados); 
         setCarregando(false);
       })
       .catch(erro => {
@@ -28,61 +29,39 @@ export default function Home() {
       });
   }, []);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const scrollAmount = 300;
-      carouselRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
+  
+  let produtosExibidos = produtos;
 
-  const medicamentosFiltrados = medicamentos.filter((m) =>
-    m.nome.toLowerCase().includes(query)
-  );
+  if (query) {
+    produtosExibidos = produtosExibidos.filter((p) => p.nome.toLowerCase().includes(query));
+  }
+
+ if (filtroAtual !== 'Todos') {
+  produtosExibidos = produtosExibidos.filter(p => p.subcategoria === filtroAtual);
+}
+
+  const medicamentos = produtosExibidos.filter(p => p.categoria === 'Medicamento' || p.categoria === 'Medicamentos');
+  const perfumaria = produtosExibidos.filter(p => p.categoria === 'Perfumaria');
+  const suplementos = produtosExibidos.filter(p => p.categoria === 'Suplemento' || p.categoria === 'Suplementos');
 
   return (
     <main className={styles.container}>
-      <section className={styles.carouselWrapper}>
-        <h2 className={styles.sectionTitle}>
-          {query ? `Resultados para "${query}"` : 'Medicamentos'}
-        </h2>
-        
-        {medicamentosFiltrados.length > 0 && (
-          <>
-            <button className={`${styles.arrow} ${styles.left}`} onClick={() => scroll('left')}>❮</button>
-            <button className={`${styles.arrow} ${styles.right}`} onClick={() => scroll('right')}>❯</button>
-          </>
-        )}
-
-        <div className={styles.carousel} ref={carouselRef}>
-          {carregando ? (
-            <p style={{ padding: '20px' }}>Carregando prateleiras...</p>
-          ) : medicamentosFiltrados.length === 0 ? (
-            <p style={{ padding: '20px', color: '#64748b' }}>
-              Nenhum produto encontrado para sua busca.
-            </p>
-          ) : (
-            medicamentosFiltrados.map((m) => (
-              <div key={m.id} className={styles.card}>
-                <div className={styles.imageArea}>
-                  <span style={{ fontSize: '40px' }}></span>
-                </div>
-                <h3 className={styles.productName}>{m.nome}</h3>
-                
-                <p className={styles.price}>R$ {m.preco.toFixed(2).replace('.', ',')}</p>
-                
-                <BotaoComprar 
-                  produtoId={m.id} 
-                  nome={m.nome} 
-                  preco={m.preco} 
-                />
-              </div>
-            ))
-          )}
+      {carregando ? (
+        <div style={{ padding: '20px', textAlign: 'center', color: '#fff' }}>
+          <h3>Carregando prateleiras...</h3>
         </div>
-      </section>
+      ) : (query || filtroAtual !== 'Todos') ? (
+        <SecaoCarrossel 
+          titulo={produtosExibidos.length > 0 ? `Resultados para "${query || filtroAtual}"` : `Nenhum produto encontrado`} 
+          produtos={produtosExibidos} 
+        />
+      ) : (
+        <>
+          <SecaoCarrossel titulo="Medicamentos" produtos={medicamentos} />
+          <SecaoCarrossel titulo="Perfumaria" produtos={perfumaria} />
+          <SecaoCarrossel titulo="Suplementos" produtos={suplementos} />
+        </>
+      )}
     </main>
   );
 }

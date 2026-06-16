@@ -21,7 +21,9 @@ def cadastrar_produto(db: Session, produto: ProdutoBase) -> ProdutoModel:
             descricao=produto.descricao,
             preco=produto.preco,
             estoque=produto.estoque,
-            categoria=produto.categoria
+            categoria=produto.categoria,
+            subcategoria=produto.subcategoria,
+            imagem_url=produto.imagem_url
         )
         db.add(novo_produto)
         db.commit()

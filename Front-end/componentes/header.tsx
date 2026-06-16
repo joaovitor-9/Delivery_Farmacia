@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'; 
 import { Search, User, ChevronDown, ShoppingCart, UserCircle, Package, LogOut } from 'lucide-react';
 import styles from './header.module.css';
 
@@ -16,7 +16,10 @@ export default function Header() {
   
   const pathname = usePathname();
   const router = useRouter(); 
+  const searchParams = useSearchParams();
   const isCheckout = pathname.startsWith('/carrinho');
+
+  const filtroAtivo = searchParams.get('filtro') || 'Todos';
 
   const atualizarContador = () => {
     const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
@@ -52,6 +55,7 @@ export default function Header() {
     setIsDropdownOpen(false);
     router.push('/login'); 
   };
+
   const handleBuscar = () => {
     if (termoBusca.trim() !== '') {
       router.push(`/?q=${encodeURIComponent(termoBusca)}`);
@@ -59,11 +63,22 @@ export default function Header() {
       router.push('/');
     }
   };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleBuscar();
     }
   };
+
+  const handleFiltro = (filtroSelecionado: string) => {
+    if (filtroSelecionado === 'Todos') {
+      router.push('/'); // Limpa a URL
+    } else {
+      router.push(`/?filtro=${encodeURIComponent(filtroSelecionado)}`);
+    }
+  };
+
+const filtros = ['Todos', 'Genéricos', 'Dor e Febre', 'Gripe', 'Infantil', 'Higiene'];
 
   if (isCheckout) {
     return (
@@ -166,12 +181,15 @@ export default function Header() {
         </div>
 
         <div className={styles.filterRow}>
-          <button className={`${styles.pill} ${styles.active}`}>Todos</button>
-          <button className={styles.pill}>Dor e Febre</button>
-          <button className={styles.pill}>Gripe</button>
-          <button className={styles.pill}>Infantil</button>
-          <button className={styles.pill}>Higiene</button>
-          <button className={styles.pill}>Ofertas</button>
+          {filtros.map((filtro) => (
+            <button 
+              key={filtro}
+              className={`${styles.pill} ${filtroAtivo === filtro ? styles.active : ''}`}
+              onClick={() => handleFiltro(filtro)}
+            >
+              {filtro}
+            </button>
+          ))}
         </div>
 
       </div>
