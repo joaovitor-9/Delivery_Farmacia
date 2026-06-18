@@ -28,7 +28,10 @@ from app.use_cases.atualizar_status_pedido import atualizar_status_pedido
 
 # Casos de Uso: Endereços
 from app.use_cases.criar_endereco import criar_endereco
-
+from app.schemas.endereco import EnderecoCriar, EnderecoAtualizar
+from app.use_cases.buscar_enderecos import buscar_enderecos_por_usuario
+from app.use_cases.atualizar_endereco import atualizar_endereco
+from app.use_cases.deletar_endereco import deletar_endereco
 
 Base.metadata.create_all(bind=engine)
 
@@ -144,3 +147,15 @@ def fazer_login_rota(dados: LoginSchema, db: Session = Depends(get_db)):
 def cadastrar_endereco_rota(endereco: EnderecoCriar, db: Session = Depends(get_db)):
     novo_endereco = criar_endereco(db=db, endereco=endereco)
     return {"id": novo_endereco.id, "mensagem": "Endereço salvo com sucesso"}
+
+@app.get("/enderecos", tags=["Endereços"])
+def rota_listar_enderecos(cliente_id: str, db: Session = Depends(get_db)):
+    return buscar_enderecos_por_usuario(db=db, usuario_id=cliente_id)
+
+@app.put("/enderecos/{endereco_id}", tags=["Endereços"])
+def rota_atualizar_endereco(endereco_id: str, usuario_id: str, dados: EnderecoAtualizar, db: Session = Depends(get_db)):
+    return atualizar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_id, dados=dados)
+
+@app.delete("/enderecos/{endereco_id}", tags=["Endereços"])
+def rota_deletar_endereco(endereco_id: str, usuario_id: str, db: Session = Depends(get_db)):
+    return deletar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_id)

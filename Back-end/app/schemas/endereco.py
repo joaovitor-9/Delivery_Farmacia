@@ -18,3 +18,11 @@ class EnderecoCriar(BaseModel):
     bairro: str
     cidade: str
     complemento: Optional[str] = None
+
+class EnderecoAtualizar(BaseModel):
+    cep: Optional[str] = None
+    logradouro: Optional[str] = None
+    numero: Optional[str] = None
+    bairro: Optional[str] = None
+    cidade: Optional[str] = None
+    complemento: Optional[str] = None
