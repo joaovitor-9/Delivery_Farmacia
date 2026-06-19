@@ -9,6 +9,7 @@ class ItemPedido(BaseModel):
     quantidade: int
     preco_unitario: float
     produto: Optional[Produto] = None 
+    nome_produto: Optional[str] = None
 
     class Config:
         from_attributes = True
