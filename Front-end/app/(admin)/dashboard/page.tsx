@@ -38,10 +38,12 @@ export default function DashboardPage() {
 
   const buscarEProcessarDados = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`, {
+        cache: 'no-store'
+      });
       if (res.ok) {
         const pedidos: Pedido[] = await res.json();
-        
+        console.log("PEDIDOS DETALHADOS:", JSON.stringify(pedidos, null, 2));
         processarMetricas(pedidos);
         processarFaturamentoSemanal(pedidos);
         processarProdutosMaisVendidos(pedidos);
@@ -53,7 +55,7 @@ export default function DashboardPage() {
 
 
   const processarMetricas = (pedidos: Pedido[]) => {
-    const hoje = new Date().toLocaleDateString();
+    const hoje = new Date().toLocaleDateString('pt-BR');
     let vHoje = 0; let pend = 0; let sep = 0; let entr = 0;
 
     pedidos.forEach(p => {
@@ -61,7 +63,7 @@ export default function DashboardPage() {
       if (p.status === 'EM PREPARO') sep++;
       if (p.status === 'ENTREGUE') entr++;
 
-      const dataPedido = p.data_criacao ? new Date(p.data_criacao).toLocaleDateString() : '';
+      const dataPedido = p.data_criacao ? new Date(p.data_criacao + 'Z').toLocaleDateString('pt-BR') : '';
       if (dataPedido === hoje && p.status !== 'CANCELADO') {
         vHoje += p.valor_total;
       }
@@ -81,9 +83,9 @@ export default function DashboardPage() {
     }
 
     const faturamentoCalculado = ultimos7Dias.map(data => {
-      const dataFormatada = data.toLocaleDateString();
+      const dataFormatada = data.toLocaleDateString('pt-BR');
       const totalDia = pedidos
-        .filter(p => p.data_criacao && new Date(p.data_criacao).toLocaleDateString() === dataFormatada && p.status !== 'CANCELADO')
+        .filter(p => p.data_criacao && new Date(p.data_criacao + 'Z').toLocaleDateString('pt-BR') === dataFormatada && p.status !== 'CANCELADO')
         .reduce((acc, p) => acc + p.valor_total, 0);
 
       return { dia: diasSemana[data.getDay()], valor: totalDia };
@@ -143,7 +145,7 @@ export default function DashboardPage() {
           <h3>Faturamento Semanal</h3>
           <div style={{ width: '100%', height: 300, marginTop: '1rem', position: 'relative' }}>
             {montado && dadosFaturamento.length > 0 && (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
                 <LineChart data={dadosFaturamento} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                   <XAxis dataKey="dia" stroke="#64748b" fontSize={12} tickLine={false} />
@@ -163,7 +165,7 @@ export default function DashboardPage() {
           <h3>Produtos Mais Vendidos (Top 5)</h3>
           <div style={{ width: '100%', height: 300, marginTop: '1rem', position: 'relative' }}>
             {montado && dadosProdutos.length > 0 && (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
                 <BarChart data={dadosProdutos} margin={{ top: 5, right: 20, bottom: 5, left: 0 }} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
                   <XAxis type="number" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
