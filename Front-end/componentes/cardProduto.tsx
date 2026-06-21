@@ -24,6 +24,7 @@ export default function CardProduto({ id, nome, preco, imagem_url }: CardProduto
           src={imagem_url || imagemPadrao} 
           alt={`Foto do produto ${nome}`}
           style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+          draggable={false}
         />
       </div>
       

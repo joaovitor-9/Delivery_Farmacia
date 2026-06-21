@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import styles from './perfil.module.css'; 
-
+import { User } from 'lucide-react';
 
 interface Usuario {
   id: string;
@@ -16,7 +16,8 @@ interface Endereco {
   id: string;
   apelido: string; 
   bairro: string;
-  rua: string;
+  rua?: string;
+  logradouro?: string;
   numero: string;
 }
 
@@ -27,8 +28,7 @@ export default function MinhaContaPage() {
   
   const router = useRouter();
 
-useEffect(() => {
-
+  useEffect(() => {
     const userString = localStorage.getItem('user'); 
 
     if (!userString) {
@@ -38,21 +38,18 @@ useEffect(() => {
     }
 
     try {
-      // 2. Converte o texto JSON em um objeto real do JavaScript
       const userObj = JSON.parse(userString);
-      const clienteId = userObj.id; // 3. Pega o ID lá de dentro!
+      const clienteId = userObj.id; 
 
       const buscarDadosDoPerfil = async () => {
         try {
           const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
-          // Busca os dados de contato do usuário
           const resUsuario = await fetch(`${apiUrl}/usuarios/${clienteId}`);
           if (resUsuario.ok) {
             setUsuario(await resUsuario.json());
           }
 
-          // Busca a lista de endereços
           const resEnderecos = await fetch(`${apiUrl}/enderecos?cliente_id=${clienteId}`);
           if (resEnderecos.ok) {
             setEnderecos(await resEnderecos.json());
@@ -73,7 +70,6 @@ useEffect(() => {
     }
   }, []);
 
-  
   const handleLogout = () => {
     localStorage.removeItem('user');
     router.push('/login'); 
@@ -87,10 +83,10 @@ useEffect(() => {
     <main className={styles.container}>
       
       <div className={styles.header}>
-        <div className={styles.avatarWrapper}>
-          <span style={{ fontSize: '40px' }}>👤</span>
+        <div className={styles.avatarWrapper} style={{ marginBottom: '3px' }}>
+          <User size={80} color="#1e1b4b" strokeWidth={1.5} />
         </div>
-        <h1 className={styles.userName}>{usuario?.nome || 'Usuário'}</h1>
+        <h1 className={styles.userName} style={{ margin: 0 }}>{usuario?.nome || 'Usuário'}</h1>
       </div>
 
       <section className={styles.card}>
@@ -108,7 +104,15 @@ useEffect(() => {
       </section>
 
       <section className={styles.card}>
-        <span className={styles.label}>MEUS ENDEREÇOS</span>
+        <div className={styles.addressHeader}>
+           <span className={styles.label}>MEUS ENDEREÇOS</span>
+           <button 
+             className={styles.addAddressBtn} 
+             onClick={() => router.push('/perfil/novo-endereco')}
+           >
+             + Novo
+           </button>
+        </div>
 
         {enderecos.length === 0 ? (
           <div className={styles.row}>
@@ -117,9 +121,13 @@ useEffect(() => {
         ) : (
           enderecos.map((end, index) => (
             <div key={end.id}>
-              <div className={styles.row} style={{ cursor: 'pointer' }}>
+              <div 
+                className={styles.row} 
+                style={{ cursor: 'pointer' }}
+                onClick={() => router.push(`/perfil/editar-endereco/${end.id}`)}
+              >
                 <p>
-                  <strong>{end.apelido || 'Endereço'}</strong> ({end.bairro})
+                  <strong>{end.rua || end.logradouro}, {end.numero}</strong>
                 </p>
                 <span style={{ color: '#1e1b4b', fontWeight: 'bold' }}>&gt;</span>
               </div>
@@ -130,7 +138,6 @@ useEffect(() => {
         )}
       </section>
 
-    
       <button className={styles.logoutBtn} onClick={handleLogout}>
         Sair da conta
       </button>
