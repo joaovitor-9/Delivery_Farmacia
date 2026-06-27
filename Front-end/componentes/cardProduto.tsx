@@ -31,11 +31,12 @@ export default function CardProduto({ id, nome, preco, imagem_url }: CardProduto
       <h3 className={styles.productName}>{nome}</h3>
       
       <p className={styles.price}>R$ {preco.toFixed(2).replace('.', ',')}</p>
-      
+
       <BotaoComprar 
         produtoId={id} 
         nome={nome} 
         preco={preco} 
+        imagem={imagem_url || imagemPadrao} 
       />
     </div>
   );

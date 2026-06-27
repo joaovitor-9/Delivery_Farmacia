@@ -13,7 +13,6 @@ export default function EditarEnderecoPage() {
   const [carregando, setCarregando] = useState(true);
   const [salvando, setSalvando] = useState(false);
 
-  // Estados dos campos
   const [apelido, setApelido] = useState('');
   const [cep, setCep] = useState('');
   const [rua, setRua] = useState('');

@@ -9,17 +9,20 @@ interface ItemCarrinho {
   nome: string;
   preco: number;
   quantidade: number;
+  imagem?: string; 
 }
 
 export default function Carrinho() {
   const [itensCarrinho, setItensCarrinho] = useState<ItemCarrinho[]>([]);
   const [carregando, setCarregando] = useState(true);
+ 
+  const [enderecosSalvos, setEnderecosSalvos] = useState<any[]>([]);
+  const [enderecoSelecionadoId, setEnderecoSelecionadoId] = useState<string>('novo');
   
   const [endereco, setEndereco] = useState({
     cep: '', logradouro: '', numero: '', bairro: '', cidade: '', complemento: ''
   });
 
-  // CORREÇÃO 1: Adicionamos o estado para guardar o ID do cliente
   const [clienteId, setClienteId] = useState<string>('');
 
   useEffect(() => {
@@ -30,6 +33,25 @@ export default function Carrinho() {
     if (usuarioSalvo) {
       const usuario = JSON.parse(usuarioSalvo);
       setClienteId(usuario.id); 
+     
+      const buscarEnderecos = async () => {
+        try {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+          const res = await fetch(`${apiUrl}/enderecos?cliente_id=${usuario.id}`);
+          if (res.ok) {
+            const dados = await res.json();
+            setEnderecosSalvos(dados);
+     
+            if (dados.length > 0) {
+              setEnderecoSelecionadoId(dados[0].id);
+            }
+          }
+        } catch (error) {
+          console.error("Erro ao buscar endereços:", error);
+        }
+      };
+      
+      buscarEnderecos();
     }
 
     setCarregando(false);
@@ -59,7 +81,6 @@ export default function Carrinho() {
   };
 
   const handleFinalizarCompra = async () => {
-    // CORREÇÃO 2: Trava de segurança. Se não tiver ID (não logou), ele barra a compra!
     if (!clienteId) {
       alert("Você precisa fazer login antes de finalizar a compra!");
       return;
@@ -70,48 +91,57 @@ export default function Carrinho() {
       return;
     }
 
-    if (!endereco.cep || !endereco.logradouro || !endereco.numero || !endereco.cidade) {
-      alert("Por favor, preencha os campos obrigatórios do endereço (CEP, Rua, Número e Cidade).");
-      return;
+    let idDoEnderecoParaOPedido = enderecoSelecionadoId;
+
+    if (enderecoSelecionadoId === 'novo') {
+      if (!endereco.cep || !endereco.logradouro || !endereco.numero || !endereco.cidade) {
+        alert("Por favor, preencha os campos obrigatórios do endereço (CEP, Rua, Número e Cidade).");
+        return;
+      }
+
+      try {
+        const dadosEndereco = {
+          cliente_id: clienteId, 
+          cep: endereco.cep,
+          logradouro: endereco.logradouro,
+          numero: endereco.numero,
+          bairro: endereco.bairro,
+          cidade: endereco.cidade,
+          complemento: endereco.complemento
+        };
+
+        const resEndereco = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/enderecos`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dadosEndereco)
+        });
+
+        if (!resEndereco.ok) {
+          const erroEnd = await resEndereco.json();
+          alert("Erro no Endereço:\n" + JSON.stringify(erroEnd.detail || erroEnd));
+          return; 
+        }
+
+        const respostaEnderecoBanco = await resEndereco.json();
+        idDoEnderecoParaOPedido = respostaEnderecoBanco.id; 
+      } catch (error) {
+        console.error("Erro ao salvar endereço:", error);
+        alert("Erro de conexão ao salvar endereço.");
+        return;
+      }
     }
 
     try {
-      const dadosEndereco = {
-        cliente_id: clienteId, // CORREÇÃO 3: Agora é automático!
-        cep: endereco.cep,
-        logradouro: endereco.logradouro,
-        numero: endereco.numero,
-        bairro: endereco.bairro,
-        cidade: endereco.cidade,
-        complemento: endereco.complemento
-      };
-
-      const resEndereco = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/enderecos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dadosEndereco)
-      });
-
-      if (!resEndereco.ok) {
-        const erroEnd = await resEndereco.json();
-        console.error("Erro ao salvar endereço:", erroEnd);
-        alert("Erro no Endereço:\n" + JSON.stringify(erroEnd.detail || erroEnd));
-        return; 
-      }
-
-      const respostaEnderecoBanco = await resEndereco.json();
-      const idDoEnderecoReal = respostaEnderecoBanco.id; 
-
       const dadosPedido = {
-        cliente_id: clienteId, // CORREÇÃO 3: Automático aqui também!
-        endereco_id: idDoEnderecoReal, 
+        cliente_id: clienteId, 
+        endereco_id: idDoEnderecoParaOPedido, 
         itens: itensCarrinho.map(item => ({
           produto_id: item.produto_id,
           quantidade: item.quantidade
         }))
       };
 
-      const resPedido = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`, {
+      const resPedido = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosPedido)
@@ -123,12 +153,11 @@ export default function Carrinho() {
         setItensCarrinho([]);
       } else {
         const erroPedido = await resPedido.json();
-        console.error("Erro detalhado do Pedido:", erroPedido);
         alert("O Back-end recusou o pedido. Motivo:\n\n" + JSON.stringify(erroPedido.detail || erroPedido, null, 2));
       }
     } catch (error) {
       console.error("Erro no fluxo de checkout:", error);
-      alert("Erro de conexão. Verifique se o back-end está rodando.");
+      alert("Erro de conexão ao finalizar pedido.");
     }
   };
 
@@ -165,7 +194,13 @@ export default function Carrinho() {
             ) : (
               itensCarrinho.map((item) => (
                 <div key={item.produto_id} className={styles.cartItem}>
-                  <div className={styles.imageArea}></div>
+                  <div className={styles.imageArea}>
+                    {item.imagem ? (
+                      <img src={item.imagem} alt={item.nome} className={styles.itemFoto} />
+                    ) : (
+                      <span style={{ fontSize: '30px' }}>💊</span>
+                    )}
+                  </div>
                   <div className={styles.itemInfo}>
                     <h3 className={styles.itemName}>{item.nome}</h3>
                     <p className={styles.itemPrice}>R$ {item.preco.toFixed(2).replace('.', ',')}</p>
@@ -193,64 +228,92 @@ export default function Carrinho() {
 
           <section className={styles.addressSection}>
             <h2 className={styles.sectionTitle}>Endereço de Entrega</h2>
-            <div className={styles.formGrid}>
-              <div className={`${styles.inputGroup} ${styles.cepField}`}>
-                <label>CEP</label>
-                <input 
-                  type="text" 
-                  placeholder="00000-000" 
-                  value={endereco.cep}
-                  onChange={(e) => setEndereco({...endereco, cep: e.target.value})}
-                />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Rua / Logradouro</label>
-                <input 
-                  type="text" 
-                  placeholder="Ex: Av. Sete de Setembro" 
-                  value={endereco.logradouro}
-                  onChange={(e) => setEndereco({...endereco, logradouro: e.target.value})}
-                />
-              </div>
-              <div className={styles.formRow}>
-                <div className={styles.inputGroup}>
-                  <label>Número</label>
-                  <input 
-                    type="text" 
-                    placeholder="123" 
-                    value={endereco.numero}
-                    onChange={(e) => setEndereco({...endereco, numero: e.target.value})}
-                  />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label>Bairro</label>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: Centro"
-                    value={endereco.bairro}
-                    onChange={(e) => setEndereco({...endereco, bairro: e.target.value})}
-                  />
-                </div>
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Cidade</label>
-                <input 
-                  type="text" 
-                  placeholder="Ex: Surubim"
-                  value={endereco.cidade}
-                  onChange={(e) => setEndereco({...endereco, cidade: e.target.value})}
-                />
-              </div>
-              <div className={styles.inputGroup}>
-                <label>Complemento (Opcional)</label>
-                <input 
-                  type="text" 
-                  placeholder="Ex: Bloco A, Apto 101"
-                  value={endereco.complemento}
-                  onChange={(e) => setEndereco({...endereco, complemento: e.target.value})}
-                />
-              </div>
+         
+            <div className={styles.inputGroup} style={{ marginBottom: '20px' }}>
+              <label>Escolha onde deseja receber o pedido</label>
+              <select 
+                value={enderecoSelecionadoId}
+                onChange={(e) => setEnderecoSelecionadoId(e.target.value)}
+                style={{ 
+                  padding: '12px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #cbd5e1', 
+                  backgroundColor: '#fff',
+                  fontSize: '15px',
+                  color: '#1e1b4b',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                {enderecosSalvos.map(end => (
+                  <option key={end.id} value={end.id}>
+                    {end.apelido ? `(${end.apelido}) ` : ''}{end.rua || end.logradouro}, {end.numero} - {end.bairro}
+                  </option>
+                ))}
+                <option value="novo">Cadastrar novo endereço</option>
+              </select>
             </div>
+
+            {enderecoSelecionadoId === 'novo' && (
+              <div className={styles.formGrid}>
+                <div className={`${styles.inputGroup} ${styles.cepField}`}>
+                  <label>CEP</label>
+                  <input 
+                    type="text" 
+                    placeholder="00000-000" 
+                    value={endereco.cep}
+                    onChange={(e) => setEndereco({...endereco, cep: e.target.value})}
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Rua / Logradouro</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ex: Av. Sete de Setembro" 
+                    value={endereco.logradouro}
+                    onChange={(e) => setEndereco({...endereco, logradouro: e.target.value})}
+                  />
+                </div>
+                <div className={styles.formRow}>
+                  <div className={styles.inputGroup}>
+                    <label>Número</label>
+                    <input 
+                      type="text" 
+                      placeholder="123" 
+                      value={endereco.numero}
+                      onChange={(e) => setEndereco({...endereco, numero: e.target.value})}
+                    />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Bairro</label>
+                    <input 
+                      type="text" 
+                      placeholder="Ex: Centro"
+                      value={endereco.bairro}
+                      onChange={(e) => setEndereco({...endereco, bairro: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Cidade</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ex: Surubim"
+                    value={endereco.cidade}
+                    onChange={(e) => setEndereco({...endereco, cidade: e.target.value})}
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Complemento (Opcional)</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ex: Bloco A, Apto 101"
+                    value={endereco.complemento}
+                    onChange={(e) => setEndereco({...endereco, complemento: e.target.value})}
+                  />
+                </div>
+              </div>
+            )}
           </section>
         </div>
         

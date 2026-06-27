@@ -1,15 +1,17 @@
 'use client';
 
 import toast from 'react-hot-toast';
+import { Plus } from 'lucide-react'; 
 import styles from './botaoComprar.module.css';
 
 interface BotaoComprarProps {
   produtoId: string;
   nome: string;
   preco: number;
+  imagem?: string; 
 }
 
-export default function BotaoComprar({ produtoId, nome, preco }: BotaoComprarProps) {
+export default function BotaoComprar({ produtoId, nome, preco, imagem }: BotaoComprarProps) {
   
   const handleAdicionarAoCarrinho = () => {
     const carrinhoAtual = JSON.parse(localStorage.getItem('carrinho') || '[]');
@@ -25,7 +27,8 @@ export default function BotaoComprar({ produtoId, nome, preco }: BotaoComprarPro
         produto_id: produtoId,
         nome: nome,
         preco: preco,
-        quantidade: 1
+        quantidade: 1,
+        imagem: imagem 
       });
     }
     localStorage.setItem('carrinho', JSON.stringify(carrinhoAtual));
@@ -40,8 +43,14 @@ export default function BotaoComprar({ produtoId, nome, preco }: BotaoComprarPro
       onClick={handleAdicionarAoCarrinho}
       className={styles.botao}
       title="Adicionar ao Carrinho"
+      style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        padding: '8px' 
+      }}
     >
-      +
+      <Plus size={20} color="currentColor" strokeWidth={2.5} />
     </button>
   );
 }

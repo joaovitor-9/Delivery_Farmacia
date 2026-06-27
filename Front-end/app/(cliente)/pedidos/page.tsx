@@ -65,7 +65,6 @@ export default function MeusPedidosPage() {
 
           setPedidos(dadosOrdenados);
 
-          // Procura o pedido em andamento
           const ativo = dadosOrdenados.find(p => p.status !== 'ENTREGUE' && p.status !== 'CANCELADO');
           setPedidoAtivo(ativo || null);
         }

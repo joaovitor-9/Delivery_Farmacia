@@ -100,7 +100,6 @@
   border-radius: 6px;
   transition: background-color 0.2s;
 }
-
 .addAddressBtn:hover {
   background-color: #f1f5f9;
 }

@@ -1,7 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-
 from .buscar_produto_por_id import buscar_produto_por_id 
 
 def deletar_produto(db: Session, produto_id: str) -> dict:

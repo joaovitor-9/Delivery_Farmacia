@@ -3,7 +3,6 @@ from fastapi import HTTPException
 from app.models.endereco import EnderecoModel
 
 def deletar_endereco(db: Session, endereco_id: str, usuario_id: str):
-    # Busca o endereço garantindo a propriedade do usuário antes de deletar
     endereco = db.query(EnderecoModel).filter(
         EnderecoModel.id == endereco_id, 
         EnderecoModel.usuario_id == usuario_id

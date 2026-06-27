@@ -1,7 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-
 from app.models.pedido import PedidoModel
 from app.models.item_pedido import ItemPedidoModel
 from app.models.produto import ProdutoModel

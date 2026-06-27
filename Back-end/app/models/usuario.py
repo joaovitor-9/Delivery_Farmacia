@@ -13,8 +13,6 @@ class UsuarioModel(Base):
     cpf = Column(String, unique=True, index=True, nullable=False)
     telefone = Column(String)
     tipo_usuario = Column(String, default="cliente")
-    
     enderecos = relationship("EnderecoModel", back_populates="dono")
-    
     pedidos = relationship("PedidoModel", back_populates="cliente")
 

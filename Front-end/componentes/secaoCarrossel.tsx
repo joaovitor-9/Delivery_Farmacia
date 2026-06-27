@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState, MouseEvent, UIEvent } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from '@/app/(cliente)/home.module.css';
 import CardProduto from './cardProduto';
 
@@ -66,28 +67,42 @@ export default function SecaoCarrossel({ titulo, produtos }: SecaoCarrosselProps
   const handleScroll = (e: UIEvent<HTMLDivElement>) => {
     if (!carouselRef.current) return;
     const carousel = carouselRef.current;
-    const metadeScroll = carousel.scrollWidth / 2;
 
-    if (carousel.scrollLeft >= metadeScroll) {
+    const tamanhoUmBloco = carousel.scrollWidth / 4;
+
+    if (carousel.scrollLeft >= tamanhoUmBloco * 2) {
       carousel.style.scrollBehavior = 'auto'; 
-      carousel.scrollLeft = carousel.scrollLeft - metadeScroll;
+      carousel.scrollLeft -= tamanhoUmBloco;
     } 
     else if (carousel.scrollLeft <= 0) {
       carousel.style.scrollBehavior = 'auto';
-      carousel.scrollLeft = metadeScroll - 1; 
+      carousel.scrollLeft += tamanhoUmBloco; 
     }
   };
 
   if (produtos.length === 0) return null;
 
-  const produtosDuplicados = [...produtos, ...produtos];
+  const produtosDuplicados = [...produtos, ...produtos, ...produtos, ...produtos];
 
   return (
     <section className={styles.carouselWrapper}>
       <h2 className={styles.sectionTitle}>{titulo}</h2>
       
-      <button className={`${styles.arrow} ${styles.left}`} onClick={() => scroll('left')}>❮</button>
-      <button className={`${styles.arrow} ${styles.right}`} onClick={() => scroll('right')}>❯</button>
+      <button 
+        className={`${styles.arrow} ${styles.left}`} 
+        onClick={() => scroll('left')}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <ChevronLeft size={24} color="currentColor" />
+      </button>
+
+      <button 
+        className={`${styles.arrow} ${styles.right}`} 
+        onClick={() => scroll('right')}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <ChevronRight size={24} color="currentColor" />
+      </button>
 
       <div 
         className={styles.carousel} 

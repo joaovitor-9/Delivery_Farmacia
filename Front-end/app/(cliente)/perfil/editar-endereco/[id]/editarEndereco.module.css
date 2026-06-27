@@ -4,14 +4,12 @@
   margin: 0 auto;
   padding-bottom: 100px;
 }
-
 .header {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
   position: relative;
 }
-
 .backBtn {
   background: none;
   border: none;
@@ -22,7 +20,6 @@
   position: absolute;
   left: 0;
 }
-
 .title {
   font-size: 24px;
   font-weight: 800;
@@ -30,7 +27,6 @@
   text-align: center;
   width: 100%;
 }
-
 .form {
   background: white;
   border: 1px solid #e2e8f0;
@@ -38,25 +34,21 @@
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
-
 .row {
   display: flex;
   justify-content: space-between;
 }
-
 .inputGroup {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
 }
-
 .inputGroup label {
   font-size: 12px;
   font-weight: 700;
   color: #64748b;
   margin-bottom: 5px;
 }
-
 .inputGroup input {
   padding: 12px;
   border: 1px solid #cbd5e1;
@@ -66,18 +58,15 @@
   outline: none;
   transition: border-color 0.2s;
 }
-
 .inputGroup input:focus {
   border-color: var(--brand-blue, #1e1b4b);
 }
-
 .actionButtons {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
 }
-
 .submitBtn {
   width: 100%;
   background: var(--brand-blue, #1e1b4b);
@@ -90,16 +79,13 @@
   cursor: pointer;
   transition: opacity 0.2s;
 }
-
 .submitBtn:hover {
   opacity: 0.9;
 }
-
 .submitBtn:disabled {
   background: #cbd5e1;
   cursor: not-allowed;
 }
-
 .deleteBtn {
   width: 100%;
   background: transparent;
@@ -112,7 +98,6 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-
 .deleteBtn:hover {
   background: #dc2626;
   color: white;
