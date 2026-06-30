@@ -6,17 +6,12 @@ import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react'; 
 import styles from './login.module.css';
 
-const FUNCIONARIOS_MOCK = [
-  { usuario: 'admin', senha: '123', nome: 'Administrador' },
-];
-
 export default function Login() {
   const router = useRouter();
   const [tipoLogin, setTipoLogin] = useState<'cliente' | 'funcionario'>('cliente');
   const [identificacao, setIdentificacao] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
-  
   const [mostrarSenha, setMostrarSenha] = useState(false); 
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -25,17 +20,10 @@ export default function Login() {
 
     if (tipoLogin === 'cliente') {
       try {
-        console.log("Enviando requisição para a API..."); 
-        
         const response = await fetch("http://localhost:8000/login", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ 
-            email: identificacao, 
-            senha: senha 
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: identificacao, senha: senha }),
         });
 
         if (!response.ok) {
@@ -43,12 +31,13 @@ export default function Login() {
           throw new Error(errorData.detail || "Erro ao tentar fazer login.");
         }
 
-        const user = await response.json();
+        const data = await response.json();
         
+        localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify({ 
-          id: user.id, 
-          nome: user.nome, 
-          tipo: user.tipo_usuario 
+          id: data.user?.id || "jwt-auth", 
+          nome: data.user?.nome || "Usuário", 
+          tipo: "cliente" 
         }));
         
         window.location.href = '/'; 
@@ -57,12 +46,23 @@ export default function Login() {
         setErro(err.message);
       }
     } else {
-      const func = FUNCIONARIOS_MOCK.find(f => f.usuario === identificacao && f.senha === senha);
-      if (func) {
-        localStorage.setItem('user', JSON.stringify({ nome: func.nome, tipo: 'funcionario' }));
-        window.location.href = 'pedidos-admin'; 
-      } else {
-        setErro('Usuário ou senha incorretos.');
+      try {
+        const response = await fetch("http://localhost:8000/login/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usuario: identificacao, senha: senha }),
+        });
+
+        if (!response.ok) throw new Error("Usuário ou senha de admin incorretos.");
+
+        const data = await response.json();
+        
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('user', JSON.stringify({ nome: 'Administrador', tipo: 'admin' }));
+        
+        window.location.href = '/pedidos-admin'; 
+      } catch (err: any) {
+        setErro(err.message);
       }
     }
   };

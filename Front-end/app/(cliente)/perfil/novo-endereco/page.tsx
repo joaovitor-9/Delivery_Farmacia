@@ -3,11 +3,11 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './novoEndereco.module.css';
+import { apiFetch } from '@/app/utils/api'; 
 
 export default function NovoEnderecoPage() {
   const router = useRouter();
   const [clienteId, setClienteId] = useState<string>('');
-  
   
   const [cep, setCep] = useState('');
   const [rua, setRua] = useState('');
@@ -43,14 +43,9 @@ export default function NovoEnderecoPage() {
     };
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-      
-      const response = await fetch(`${apiUrl}/enderecos`, {
+      const response = await apiFetch('/enderecos', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(novoEndereco),
+        body: JSON.stringify(novoEndereco)
       });
 
       if (response.ok) {

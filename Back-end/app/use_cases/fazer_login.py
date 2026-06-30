@@ -1,18 +1,21 @@
-from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models.usuario import UsuarioModel
+from app.security.security import verificar_senha
 
-def fazer_login(db: Session, email: str, senha: str) -> UsuarioModel:
-    print(f"--- TENTATIVA DE LOGIN ---")
+def autenticar_usuario(db: Session, email: str, senha: str):
+    print(f"--- TENTATIVA DE LOGIN COM JWT ---")
     print(f"Email recebido: '{email}'")
-    print(f"Senha recebida: '{senha}'")
+    
     usuario = db.query(UsuarioModel).filter(UsuarioModel.email == email).first()
     
     if not usuario:
-        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
-    
-    senha_esperada = f"hash_seguro_{senha}"
-    if usuario.senha_hash != senha_esperada:
-        raise HTTPException(status_code=401, detail="E-mail ou senha incorretos.")
+        print("Falha: Usuário não encontrado no banco.")
+        return None
         
+
+    if not verificar_senha(senha, usuario.senha_hash):
+        print("Falha: Senha incorreta.")
+        return None
+        
+    print("Sucesso: Login aprovado!")
     return usuario

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './pedidosKanban.module.css';
+import { apiFetch } from '@/app/utils/api';
 
 interface ProdutoInfo {
   nome: string;
@@ -26,7 +27,6 @@ export default function PedidosPage() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [carregando, setCarregando] = useState(true);
 
-
   const colunas = [
     { id: 'PENDENTE', titulo: 'Novos Pedidos' },
     { id: 'EM PREPARO', titulo: 'Em Separação' },
@@ -34,21 +34,22 @@ export default function PedidosPage() {
     { id: 'ENTREGUE', titulo: 'Entregue' }
   ];
 
-
   useEffect(() => {
     carregarPedidos();
   }, []);
 
   const carregarPedidos = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`);
+      const res = await apiFetch('/pedidos'); 
       if (res.ok) {
         const dados = await res.json();
         const pedidosComNome = dados.map((p: Pedido) => ({
           ...p,
-          nome_cliente: p.nome_cliente || 'Cliente ' + p.cliente_id.substring(0,4)
+          nome_cliente: p.nome_cliente || 'Cliente ' + (p.cliente_id?.substring(0,4) || '???')
         }));
         setPedidos(pedidosComNome);
+      } else {
+        console.error("Erro ao carregar pedidos:", res.status);
       }
     } catch (error) {
       console.error("Erro ao buscar pedidos:", error);
@@ -56,7 +57,6 @@ export default function PedidosPage() {
       setCarregando(false);
     }
   };
-
 
   const handleDragStart = (e: React.DragEvent, pedidoId: string) => {
     e.dataTransfer.setData("pedidoId", pedidoId);
@@ -78,12 +78,10 @@ export default function PedidosPage() {
     const pedidoArrastado = pedidos.find(p => p.id === pedidoId);
     if (!pedidoArrastado || pedidoArrastado.status === novoStatus) return;
 
-    
     setPedidos(atuais => atuais.map(p => p.id === pedidoId ? { ...p, status: novoStatus } : p));
 
-    
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos/${pedidoId}/status?novo_status=${novoStatus}`, {
+      const res = await apiFetch(`/pedidos/${pedidoId}/status?novo_status=${novoStatus}`, {
         method: 'PUT',
       });
       
@@ -100,7 +98,6 @@ export default function PedidosPage() {
   if (carregando) {
     return <div className={styles.kanbanWrapper}><h3 style={{color: '#fff', padding: '20px'}}>Carregando quadro...</h3></div>;
   }
-
 
   return (
     <div className={styles.kanbanWrapper}>

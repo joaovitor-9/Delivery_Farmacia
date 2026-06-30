@@ -5,6 +5,7 @@ import styles from './dashboard.module.css';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { apiFetch } from '@/app/utils/api';
 
 interface ProdutoInfo {
   nome: string;
@@ -38,12 +39,9 @@ export default function DashboardPage() {
 
   const buscarEProcessarDados = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pedidos`, {
-        cache: 'no-store'
-      });
+      const res = await apiFetch('/pedidos');
       if (res.ok) {
         const pedidos: Pedido[] = await res.json();
-        console.log("PEDIDOS DETALHADOS:", JSON.stringify(pedidos, null, 2));
         processarMetricas(pedidos);
         processarFaturamentoSemanal(pedidos);
         processarProdutosMaisVendidos(pedidos);

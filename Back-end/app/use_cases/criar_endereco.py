@@ -3,10 +3,10 @@ from fastapi import HTTPException
 from app.models.endereco import EnderecoModel
 from app.schemas.endereco import EnderecoCriar
 
-def criar_endereco(db: Session, endereco: EnderecoCriar):
+def criar_endereco(db: Session, endereco: EnderecoCriar, usuario_id: str):
     try:
         novo_endereco = EnderecoModel(
-            usuario_id=endereco.cliente_id, 
+            usuario_id=usuario_id,
             rua=endereco.logradouro,         
             cep=endereco.cep,
             numero=endereco.numero,
@@ -18,7 +18,6 @@ def criar_endereco(db: Session, endereco: EnderecoCriar):
         db.add(novo_endereco)
         db.commit()
         db.refresh(novo_endereco)
-        
         return novo_endereco
         
     except Exception as e:

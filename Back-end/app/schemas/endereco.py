@@ -11,7 +11,6 @@ class Endereco(BaseModel):
     cep: str
 
 class EnderecoCriar(BaseModel):
-    cliente_id: str
     cep: str
     logradouro: str
     numero: str

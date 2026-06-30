@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Trash2 } from 'lucide-react';
 import styles from './carrinho.module.css';
+import { apiFetch } from '@/app/utils/api';
 
 interface ItemCarrinho {
   produto_id: string;
@@ -13,9 +15,10 @@ interface ItemCarrinho {
 }
 
 export default function Carrinho() {
+  const router = useRouter();
   const [itensCarrinho, setItensCarrinho] = useState<ItemCarrinho[]>([]);
   const [carregando, setCarregando] = useState(true);
- 
+  
   const [enderecosSalvos, setEnderecosSalvos] = useState<any[]>([]);
   const [enderecoSelecionadoId, setEnderecoSelecionadoId] = useState<string>('novo');
   
@@ -33,15 +36,15 @@ export default function Carrinho() {
     if (usuarioSalvo) {
       const usuario = JSON.parse(usuarioSalvo);
       setClienteId(usuario.id); 
-     
+      
       const buscarEnderecos = async () => {
         try {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-          const res = await fetch(`${apiUrl}/enderecos?cliente_id=${usuario.id}`);
+          // Substituído para apiFetch
+          const res = await apiFetch(`/enderecos?cliente_id=${usuario.id}`);
           if (res.ok) {
             const dados = await res.json();
             setEnderecosSalvos(dados);
-     
+      
             if (dados.length > 0) {
               setEnderecoSelecionadoId(dados[0].id);
             }
@@ -53,7 +56,6 @@ export default function Carrinho() {
       
       buscarEnderecos();
     }
-
     setCarregando(false);
   }, []);
 
@@ -69,7 +71,6 @@ export default function Carrinho() {
       }
       return item;
     });
-    
     setItensCarrinho(novoCarrinho);
     localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
   };
@@ -85,7 +86,6 @@ export default function Carrinho() {
       alert("Você precisa fazer login antes de finalizar a compra!");
       return;
     }
-
     if (itensCarrinho.length === 0) {
       alert("Seu carrinho está vazio!");
       return;
@@ -95,7 +95,7 @@ export default function Carrinho() {
 
     if (enderecoSelecionadoId === 'novo') {
       if (!endereco.cep || !endereco.logradouro || !endereco.numero || !endereco.cidade) {
-        alert("Por favor, preencha os campos obrigatórios do endereço (CEP, Rua, Número e Cidade).");
+        alert("Por favor, preencha os campos obrigatórios do endereço.");
         return;
       }
 
@@ -110,15 +110,14 @@ export default function Carrinho() {
           complemento: endereco.complemento
         };
 
-        const resEndereco = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/enderecos`, {
+        const resEndereco = await apiFetch('/enderecos', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dadosEndereco)
         });
 
         if (!resEndereco.ok) {
           const erroEnd = await resEndereco.json();
-          alert("Erro no Endereço:\n" + JSON.stringify(erroEnd.detail || erroEnd));
+          alert("Erro no Endereço: " + JSON.stringify(erroEnd.detail || erroEnd));
           return; 
         }
 
@@ -141,9 +140,9 @@ export default function Carrinho() {
         }))
       };
 
-      const resPedido = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/pedidos`, {
+      // Substituído para apiFetch
+      const resPedido = await apiFetch('/pedidos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosPedido)
       });
 
@@ -151,9 +150,10 @@ export default function Carrinho() {
         alert("Pedido realizado com sucesso!");
         localStorage.removeItem('carrinho');
         setItensCarrinho([]);
+        router.push('/');
       } else {
         const erroPedido = await resPedido.json();
-        alert("O Back-end recusou o pedido. Motivo:\n\n" + JSON.stringify(erroPedido.detail || erroPedido, null, 2));
+        alert("Erro ao finalizar pedido: " + JSON.stringify(erroPedido.detail || erroPedido));
       }
     } catch (error) {
       console.error("Erro no fluxo de checkout:", error);

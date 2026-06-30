@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 import styles from './perfil.module.css'; 
 import { User } from 'lucide-react';
+import { apiFetch } from '@/app/utils/api';
 
 interface Usuario {
   id: string;
@@ -30,9 +31,10 @@ export default function MinhaContaPage() {
 
   useEffect(() => {
     const userString = localStorage.getItem('user'); 
+    const token = localStorage.getItem('token'); 
 
-    if (!userString) {
-      console.warn("Usuário não está logado.");
+    if (!userString || !token) {
+      console.warn("Usuário não está logado ou token ausente.");
       setCarregando(false);
       return;
     }
@@ -43,14 +45,12 @@ export default function MinhaContaPage() {
 
       const buscarDadosDoPerfil = async () => {
         try {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-
-          const resUsuario = await fetch(`${apiUrl}/usuarios/${clienteId}`);
+          const resUsuario = await apiFetch(`/usuarios/${clienteId}`);
           if (resUsuario.ok) {
             setUsuario(await resUsuario.json());
           }
 
-          const resEnderecos = await fetch(`${apiUrl}/enderecos?cliente_id=${clienteId}`);
+          const resEnderecos = await apiFetch(`/enderecos?cliente_id=${clienteId}`);
           if (resEnderecos.ok) {
             setEnderecos(await resEnderecos.json());
           }
@@ -72,6 +72,7 @@ export default function MinhaContaPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     router.push('/login'); 
   };
 

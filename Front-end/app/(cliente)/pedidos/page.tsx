@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import styles from './pedidos.module.css';
+import { apiFetch } from '@/app/utils/api';
 
 interface Pedido {
   id: string;
@@ -24,8 +25,7 @@ export default function MeusPedidosPage() {
     setCarregandoDetalhes(true);
     
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-      const res = await fetch(`${apiUrl}/pedidos/${pedidoId}`);
+      const res = await apiFetch(`/pedidos/${pedidoId}`);
       if (res.ok) {
         const dados = await res.json();
         console.log("DADOS DO PEDIDO:", dados);
@@ -47,15 +47,16 @@ export default function MeusPedidosPage() {
     const buscarPedidos = async () => {
       try {
         const userString = localStorage.getItem('user');
-        if (!userString) {
+        const token = localStorage.getItem('token');
+        
+        if (!userString || !token) {
           setCarregando(false);
           return;
         }
 
         const clienteId = JSON.parse(userString).id;
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
-        const res = await fetch(`${apiUrl}/pedidos?cliente_id=${clienteId}`);
+        const res = await apiFetch(`/pedidos?cliente_id=${clienteId}`);
         if (res.ok) {
           const dados: Pedido[] = await res.json();
           
@@ -101,7 +102,6 @@ export default function MeusPedidosPage() {
   return (
     <main className={styles.container}>
       
-      
       {pedidoAtivo && (
         <section className={styles.activeOrder}>
           <div className={styles.activeHeader}>
@@ -129,7 +129,6 @@ export default function MeusPedidosPage() {
            <p style={{ textAlign: 'center', padding: '20px' }}>Você ainda não fez nenhum pedido.</p>
         ) : (
           <div className={styles.historyList}>
-            
             
             <div className={`${styles.historyGrid} ${styles.tableHeader}`}>
               <div className={styles.colId}>NÚMERO DO PEDIDO</div>
@@ -168,6 +167,7 @@ export default function MeusPedidosPage() {
           </div>
         )}
       </section>
+      
       {modalAberto && (
         <div className={styles.modalOverlay} onClick={fecharModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -183,8 +183,8 @@ export default function MeusPedidosPage() {
                 <p><strong>Valor Total:</strong> R$ {pedidoDetalhado.valor_total?.toFixed(2).replace('.', ',')}</p>
                 
                <h3 style={{ marginTop: '20px', fontSize: '16px', color: '#1e1b4b', borderBottom: '1px solid #e2e8f0', paddingBottom: '5px' }}>
-                  Itens Comprados:
-                </h3>
+                 Itens Comprados:
+               </h3>
                 <ul style={{ paddingLeft: '20px', marginTop: '10px', color: '#333' }}>
                   {pedidoDetalhado.itens?.map((item: any, index: number) => (
                     <li key={index} style={{ marginBottom: '8px' }}>

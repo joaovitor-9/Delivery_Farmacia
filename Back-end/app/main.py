@@ -5,6 +5,13 @@ from pydantic import BaseModel
 from app.database import get_db, engine, Base
 from app.schemas.endereco import EnderecoCriar
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+#Segurança e Token
+from app.schemas.token import Token
+from app.security.security import criar_token_acesso
+from app.dependencies import obter_usuario_atual
+from app.use_cases.fazer_login import autenticar_usuario
 
 #Casos de Uso: Produtos
 from app.use_cases.cadastrar_produto import cadastrar_produto 
@@ -18,7 +25,6 @@ from app.use_cases.cadastrar_usuario import cadastrar_usuario
 from app.use_cases.buscar_usuarios import buscar_usuarios 
 from app.use_cases.buscar_usuario_por_id import buscar_usuario_por_id
 from app.use_cases.atualizar_usuario import atualizar_usuario
-from app.use_cases.fazer_login import fazer_login
 
 #Casos de Uso: Pedidos
 from app.use_cases.realizar_pedido import realizar_pedido
@@ -49,6 +55,10 @@ class PedidoCriarSchema(BaseModel):
 
 class LoginSchema(BaseModel):
     email: str
+    senha: str
+
+class AdminLogin(BaseModel):
+    usuario: str
     senha: str
 
 app = FastAPI(
@@ -96,66 +106,124 @@ def listar_usuarios(
 ):
     return buscar_usuarios(db=db, nome=nome)
 
-@app.get("/usuarios/{usuario_id}", response_model=Usuario, tags=["Usuários"])
-def obter_usuario_por_id(usuario_id: str, db: Session = Depends(get_db)):
-    return buscar_usuario_por_id(db=db, usuario_id=usuario_id)
+@app.get("/usuarios/me", response_model=Usuario, tags=["Usuários"])
+def obter_usuario_por_id(usuario_atual: Usuario = Depends(obter_usuario_atual), db: Session = Depends(get_db)):
+    return buscar_usuario_por_id(db=db, usuario_id=usuario_atual.id)
+
+@app.put("/usuarios/me", response_model=Usuario, tags=["Usuários"])
+def modificar_usuario(usuario: UsuarioBase, usuario_atual: Usuario = Depends(obter_usuario_atual), db: Session = Depends(get_db)):
+    return atualizar_usuario(db=db, usuario_id=usuario_atual.id, dados_atualizados=usuario)
 
 @app.post("/usuarios", response_model=Usuario, status_code=201, tags=["Usuários"])
 def cadastrar_usuario_rota(usuario: UsuarioBase, db: Session = Depends(get_db)):
     return cadastrar_usuario(db=db, usuario=usuario)
 
-@app.put("/usuarios/{usuario_id}", response_model=Usuario, tags=["Usuários"])
-def modificar_usuario(usuario_id: str, usuario: UsuarioBase, db: Session = Depends(get_db)):
-    return atualizar_usuario(db=db, usuario_id=usuario_id, dados_atualizados=usuario)
-
 @app.post("/pedidos", status_code=201, tags=["Pedidos"])
-def cadastrar_pedido(pedido_dados: PedidoCriarSchema, db: Session = Depends(get_db)):
+def cadastrar_pedido(
+    pedido_dados: PedidoCriarSchema, 
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual) 
+):
     return realizar_pedido(
         db=db,
-        cliente_id=pedido_dados.cliente_id,
+        cliente_id=usuario_atual.id, 
         endereco_id=pedido_dados.endereco_id,
         itens_carrinho=pedido_dados.itens
     )
-
 @app.get("/pedidos", tags=["Pedidos"])
 def listar_pedidos(
-    cliente_id: Optional[str] = Query(None, description="Filtrar histórico por ID do cliente"),
+    cliente_id: Optional[str] = Query(None, description="Filtrar histórico por ID do cliente (Apenas Admin)"),
     status: Optional[str] = Query(None, description="Filtrar pedidos por estado operacional"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual)
 ):
-    return buscar_pedidos(db=db, cliente_id=cliente_id, status=status)
+    if usuario_atual.tipo_usuario != "cliente": 
+        return buscar_pedidos(db=db, cliente_id=cliente_id, status=status)
+    
+    return buscar_pedidos(db=db, cliente_id=usuario_atual.id, status=status)
 
 @app.get("/pedidos/{pedido_id}", tags=["Pedidos"])
-def obter_pedido_especifico(pedido_id: str, db: Session = Depends(get_db)):
+def obter_pedido_especifico(
+    pedido_id: str, 
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual) 
+):
     return buscar_pedido_por_id(db=db, pedido_id=pedido_id)
 
 @app.put("/pedidos/{pedido_id}/status", tags=["Pedidos"])
-def modificar_status_pedido(pedido_id: str, novo_status: str = Query(...), db: Session = Depends(get_db)):
+def modificar_status_pedido(
+    pedido_id: str, 
+    novo_status: str = Query(...), 
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual)
+):
+    if usuario_atual.tipo_usuario == "cliente":
+        raise HTTPException(
+            status_code=403, 
+            detail="Acesso negado. Apenas a farmácia pode alterar o status."
+        )
     return atualizar_status_pedido(db=db, pedido_id=pedido_id, novo_status=novo_status)
 
-@app.post("/login", tags=["Autenticação"])
+@app.post("/login", response_model=Token, tags=["Autenticação"])
 def fazer_login_rota(dados: LoginSchema, db: Session = Depends(get_db)):
-    usuario = fazer_login(db=db, email=dados.email, senha=dados.senha)
+    usuario = autenticar_usuario(db=db, email=dados.email, senha=dados.senha)
+    
+    if not usuario:
+        raise HTTPException(
+            status_code=401, 
+            detail="Email ou senha incorretos",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    token_jwt = criar_token_acesso(dados={"sub": usuario.email})
+    
     return {
-        "id": usuario.id,
-        "nome": usuario.nome,
-        "email": usuario.email,
-        "tipo_usuario": usuario.tipo_usuario
+        "access_token": token_jwt, 
+        "token_type": "bearer",
+        "user": {
+            "id": str(usuario.id),
+            "nome": usuario.nome
+        }
     }
 
 @app.post("/enderecos", status_code=201, tags=["Endereços"])
-def cadastrar_endereco_rota(endereco: EnderecoCriar, db: Session = Depends(get_db)):
-    novo_endereco = criar_endereco(db=db, endereco=endereco)
+def cadastrar_endereco_rota(
+    endereco: EnderecoCriar, 
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual) 
+):
+    novo_endereco = criar_endereco(db=db, endereco=endereco, usuario_id=usuario_atual.id)
     return {"id": novo_endereco.id, "mensagem": "Endereço salvo com sucesso"}
 
 @app.get("/enderecos", tags=["Endereços"])
-def rota_listar_enderecos(cliente_id: str, db: Session = Depends(get_db)):
-    return buscar_enderecos_por_usuario(db=db, usuario_id=cliente_id)
+def rota_listar_enderecos(
+    db: Session = Depends(get_db),
+    usuario_atual: Usuario = Depends(obter_usuario_atual)
+):
+    return buscar_enderecos_por_usuario(db=db, usuario_id=usuario_atual.id)
 
 @app.put("/enderecos/{endereco_id}", tags=["Endereços"])
-def rota_atualizar_endereco(endereco_id: str, usuario_id: str, dados: EnderecoAtualizar, db: Session = Depends(get_db)):
-    return atualizar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_id, dados=dados)
+def rota_atualizar_endereco(
+    endereco_id: str, 
+    dados: EnderecoAtualizar,
+    usuario_atual: Usuario = Depends(obter_usuario_atual), 
+    db: Session = Depends(get_db)
+):
+    return atualizar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_atual.id, dados=dados)
 
 @app.delete("/enderecos/{endereco_id}", tags=["Endereços"])
-def rota_deletar_endereco(endereco_id: str, usuario_id: str, db: Session = Depends(get_db)):
-    return deletar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_id)
+def rota_deletar_endereco(endereco_id: str, usuario_atual: Usuario = Depends(obter_usuario_atual), db: Session = Depends(get_db)):
+    return deletar_endereco(db=db, endereco_id=endereco_id, usuario_id=usuario_atual.id)
+
+@app.post("/login/admin", tags=["Autenticação"])
+def login_admin(dados: AdminLogin):
+    if dados.usuario == "admin" and dados.senha == "123":
+        from app.security.security import criar_token_acesso 
+        token_jwt = criar_token_acesso(dados={"sub": "admin@farmacia.com"})
+        
+        return {
+            "access_token": token_jwt, 
+            "token_type": "bearer",
+            "user": {"nome": "Administrador", "tipo": "admin"}
+        }
+    
+    raise HTTPException(status_code=401, detail="Credenciais de admin inválidas")
