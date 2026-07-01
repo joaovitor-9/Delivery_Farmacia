@@ -1,85 +1,114 @@
-# 💊 Farmácia Delivery 
+Aqui está o texto completo e atualizado do seu projeto Full-Stack, pronto para você selecionar, copiar e colar no seu arquivo `README.md`:
 
-![Status do Projeto](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)
-![Next.js](https://img.shields.io/badge/Next.js-Black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
-![CSS Modules](https://img.shields.io/badge/CSS_Modules-1572B6?logo=css3&logoColor=white)
+# 💊 Farmácia Delivery
 
-Um sistema web completo de e-commerce e gestão de pedidos para farmácias. Este projeto funciona como um MVP (Minimum Viable Product) e foi projetado com uma arquitetura moderna, separando a experiência do cliente final do painel de controle administrativo.
+Um sistema Full-Stack completo de e-commerce e gestão de pedidos para farmácias. Este projeto funciona como um MVP (Minimum Viable Product) e foi projetado com uma arquitetura moderna, separando a experiência do cliente final do painel de controle administrativo, tudo alimentado por uma API RESTful robusta.
 
 ## ✨ Funcionalidades
 
-O sistema é dividido em duas grandes áreas (Rotas separadas no Next.js):
+### 🛒 Área do Cliente (Front-end: `/`)
 
-### 🛒 Área do Cliente (`/`)
 * **Catálogo de Produtos:** Listagem de medicamentos e itens de farmácia com filtros de categoria (Dor e Febre, Gripe, Higiene, etc).
 * **Carrinho de Compras Avançado:** Sistema de carrinho em etapas (Stepper) com resumo de valores, controle de quantidade e formulário de entrega.
-* **Histórico de Pedidos:** Tabela responsiva (Grid Layout) com o status de pedidos anteriores do cliente.
-* **Autenticação (Mock):** Tela de login moderna com alternância entre perfis (Cliente vs Funcionário) usando `localStorage` para gerenciar a sessão ativa no cabeçalho.
+* **Histórico de Pedidos:** Tabela responsiva com o status de pedidos anteriores do cliente.
+* **Autenticação:** Sistema de login seguro com JWT, separando perfis de Cliente e Funcionário.
 
-### 💼 Painel Administrativo (`/pedidos` & `/dashboard`)
-* **Sistema Kanban de Pedidos:** Interface visual e interativa para acompanhamento do fluxo logístico, com colunas para: *Novos Pedidos*, *Preparando*, *Saiu para Entrega* e *Entregue*.
-* **Layout Dashboard:** Menu lateral (Sidebar) fixo para navegação rápida e área de trabalho espaçosa, otimizada para uso em computadores de balcão.
-* **Modo de Visão Limpa:** Design focado na leitura rápida dos itens do pedido para acelerar a separação no estoque.
+### 💼 Painel Administrativo (Front-end: `/pedidos-admin` & `/dashboard`)
+
+* **Sistema Kanban de Pedidos:** Interface visual e interativa para acompanhamento do fluxo logístico (Novos Pedidos, Preparando, Saiu para Entrega, Entregue).
+* **Dashboard:** Menu lateral (Sidebar) fixo para navegação rápida, otimizada para uso em computadores de balcão.
+
+### ⚙️ API e Back-end
+
+* **Arquitetura Limpa:** Código estruturado com separação clara de responsabilidades (`Models`, `Schemas`, `Use Cases`, `Security`).
+* **Segurança:** Senhas criptografadas com Bcrypt (Passlib) e autenticação baseada em tokens JWT.
+* **Validação de Dados:** Validação rigorosa de entradas (como CPF e E-mail) utilizando Pydantic.
+* **Banco de Dados Relacional:** Modelagem completa usando SQLAlchemy (ORM) e PostgreSQL.
 
 ## 🚀 Tecnologias Utilizadas
 
-* **Framework Principal:** [Next.js](https://nextjs.org/) (App Router).
-* **Biblioteca de Interface:** [React](https://reactjs.org/).
-* **Linguagem:** [TypeScript](https://www.typescriptlang.org/) (tipagem estática para maior segurança).
-* **Estilização:** *CSS Modules* (escopo fechado e componentização).
-* **Ícones:** [Lucide React](https://lucide.dev/) (ícones vetoriais modernos).
-* **Gráficos e Dashboards:** [Recharts](https://recharts.org/) (visualização de dados no painel administrativo).
+### Front-end
+
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+* **Estilização:** CSS Modules
+* **Ícones & Gráficos:** Lucide React e Recharts
+
+### Back-end
+
+* **Framework:** [FastAPI](https://www.google.com/search?q=https://fastapi.tiangolo.com/) (Python)
+* **ORM:** SQLAlchemy
+* **Validação:** Pydantic
+* **Banco de Dados:** PostgreSQL
+* **Segurança:** PyJWT e Passlib (Bcrypt)
 
 ## 🎨 Planejamento Visual e Funcional
 
 ### Prototipação (Baixa Fidelidade)
+
 Esboço inicial da interface, focado na disposição dos elementos e fluxo de navegação.
 
-[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/proto/XKzc8QdniHfRaDnHFNal0r/Prot%C3%B3tipo-Sistema-Delivery-de-Farm%C3%A1cia?node-id=1-2&p=f&t=R0JCD5BARSK5lrAj-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2)
-
 ### Diagrama de Caso de Uso
-Interações dos atores (Cliente/Administrador) com as funcionalidades centrais do sistema.
 
-![Diagrama de Caso de Uso](./docs/diagrama-casos-de-uso.png)
+Interações dos atores (Cliente/Administrador) com as funcionalidades centrais do sistema.
 
 ## 💻 Pré-requisitos
 
-Antes de começar, verifique se você atendeu aos seguintes requisitos:
+Antes de começar, você precisará ter instalado em sua máquina:
 
-Você instalou a versão estável mais recente do Node.js e NPM.
+* [Node.js](https://www.google.com/search?q=https://nodejs.org/) e NPM
+* [Python 3.9+](https://www.google.com/search?q=https://www.python.org/)
+* [PostgreSQL](https://www.google.com/search?q=https://www.postgresql.org/) rodando localmente (ou em nuvem)
 
-Você tem uma máquina Windows, Linux ou Mac.
+## 🛠️ Instalando e Rodando o Projeto
 
-## 🚀 Instalando Farmácia Delivery 
-Para instalar o Farmácia Delivery , siga estas etapas:
+Clone o repositório em sua máquina:
 
-Linux, macOS e Windows:
-
-```Bash
-### Clone o repositório
+```bash
 git clone https://github.com/joaovitor-9/Delivery_Farmacia.git
-
-### Acesse a pasta
 cd Delivery_Farmacia
 
-### Instale as dependências
+```
+
+### 1. Configurando o Back-end (API)
+
+Abra um terminal e navegue até a pasta do back-end:
+
+```bash
+cd Back-end
+
+# Crie e ative o ambiente virtual
+python -m venv venv
+
+.\venv\Scripts\Activate.ps1
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Inicie o servidor da API
+uvicorn app.main:app --reload
+
+```
+
+### 2. Configurando o Front-end
+
+Abra um **novo terminal** e navegue até a pasta do front-end:
+
+```bash
+cd Front-end
+
+# Instale as dependências
 npm install
 
-### Inicie o servidor
+# Inicie o servidor web
 npm run dev
 
-Acesse http://localhost:3000 no seu navegador para ver o resultado.
 ```
-## 🔐 Acesso ao Sistema
 
-### 🛒 Área do Cliente
-Para simular o login do cliente:
-* **Usuário:** cliente@gmail.com
-* **Senha:** 123
+*Acesse `http://localhost:3000` no seu navegador para ver a interface gráfica.*
 
-### 💼 Painel Administrativo
-Para simular o login do funcionário:
+### 💼 Acesso ao Painel Administrativo
+
 * **Usuário:** admin
 * **Senha:** 123
 
@@ -87,5 +116,3 @@ Para simular o login do funcionário:
 
 * [Elias Manuel Fonseca Moreira](https://github.com/elias445) - Desenvolvedor
 * [João Vitor Farias de Amorim](https://github.com/joaovitor-9) - Desenvolvedor
-
-
