@@ -1,5 +1,3 @@
-Aqui está o texto completo e atualizado do seu projeto Full-Stack, pronto para você selecionar, copiar e colar no seu arquivo `README.md`:
-
 # 💊 Farmácia Delivery
 
 Um sistema Full-Stack completo de e-commerce e gestão de pedidos para farmácias. Este projeto funciona como um MVP (Minimum Viable Product) e foi projetado com uma arquitetura moderna, separando a experiência do cliente final do painel de controle administrativo, tudo alimentado por uma API RESTful robusta.
