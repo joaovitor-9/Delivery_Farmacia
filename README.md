@@ -1,4 +1,10 @@
 # 💊 Farmácia Delivery
+![Status do Projeto](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)
+![Next.js](https://img.shields.io/badge/Next.js-Black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 
 Um sistema Full-Stack completo de e-commerce e gestão de pedidos para farmácias. Este projeto funciona como um MVP (Minimum Viable Product) e foi projetado com uma arquitetura moderna, separando a experiência do cliente final do painel de controle administrativo, tudo alimentado por uma API RESTful robusta.
 
@@ -43,12 +49,14 @@ Um sistema Full-Stack completo de e-commerce e gestão de pedidos para farmácia
 ## 🎨 Planejamento Visual e Funcional
 
 ### Prototipação (Baixa Fidelidade)
-
 Esboço inicial da interface, focado na disposição dos elementos e fluxo de navegação.
 
-### Diagrama de Caso de Uso
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/proto/XKzc8QdniHfRaDnHFNal0r/Prot%C3%B3tipo-Sistema-Delivery-de-Farm%C3%A1cia?node-id=1-2&p=f&t=R0JCD5BARSK5lrAj-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2)
 
+### Diagrama de Caso de Uso
 Interações dos atores (Cliente/Administrador) com as funcionalidades centrais do sistema.
+
+![Diagrama de Caso de Uso](./docs/diagrama-casos-de-uso.png)
 
 ## 💻 Pré-requisitos
 
