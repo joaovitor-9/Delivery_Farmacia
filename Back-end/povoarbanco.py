@@ -1,6 +1,6 @@
 import requests
 
-URL = "http://127.0.0.1:8000/produtos"
+URL = "https://delivery-farmacia.onrender.com/produtos"
 
 produtos_teste = [
 
