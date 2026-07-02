@@ -219,18 +219,38 @@
   font-size: 15px;
 }
 @media (max-width: 900px) {
+  .container {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 20px 15px 100px 15px;
+  }
+
   .content {
     flex-direction: column;
+    width: 100%;
   }
-  .summary {
+  .addressSection, .summary {
     width: 100%;
     position: static;
+    box-sizing: border-box; 
+    padding: 20px 15px;
+  }
+  .formRow {
+    flex-direction: column; 
+    width: 100%;
+  }
+  .cepField {
+      max-width: 100%;
   }
   .stepper {
     display: none;
   }
   .cartItem {
     flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
   }
 }
 .imageArea {
@@ -245,7 +265,6 @@
   flex-shrink: 0;
   border: 1px solid #e2e8f0;
 }
-
 .itemFoto {
   width: 100%;
   height: 100%;
