@@ -189,13 +189,13 @@
 @media (max-width: 1280px) {
   .header {
     min-height: auto;
-    padding: 10px 0;
+    padding: 20px 0;
   }
   .container {
     flex-direction: row; 
     flex-wrap: wrap; 
     justify-content: space-between;
-    padding: 10px 15px;
+    padding: 15px 15px;
     gap: 15px;
   }
   .logoWrapper {
