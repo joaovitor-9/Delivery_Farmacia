@@ -14,5 +14,16 @@ export const apiFetch = async (url: string, options: any = {}) => {
     headers,
   });
 
+  if (response.status === 401) {
+    console.warn("Sessão expirada ou não autorizada. Deslogando o usuário...");
+    
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
+    if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+        window.location.href = '/login';
+    }
+  }
+
   return response;
 };
