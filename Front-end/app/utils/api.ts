@@ -1,17 +1,18 @@
-
 export const apiFetch = async (url: string, options: any = {}) => {
-    const token = localStorage.getItem('token');
-    
-    const headers = {
-        ...options.headers,
-        "Content-Type": "application/json",
-        "Authorization": token ? `Bearer ${token}` : "",
-    };
+  const token = localStorage.getItem('token');
 
-    const response = await fetch(`http://localhost:8000${url}`, {
-        ...options,
-        headers,
-    });
+  const headers = {
+    ...options.headers,
+    "Content-Type": "application/json",
+    "Authorization": token ? `Bearer ${token}` : "",
+  };
 
-    return response;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+  const response = await fetch(`${apiUrl}${url}`, {
+    ...options,
+    headers,
+  });
+
+  return response;
 };

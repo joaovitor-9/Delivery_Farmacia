@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'; 
-import { Search, User, ChevronDown, ShoppingCart, UserCircle, Package, LogOut, ChevronLeft } from 'lucide-react';import styles from './header.module.css';
+import { Search, User, ChevronDown, ShoppingCart, UserCircle, Package, LogOut, ChevronLeft } from 'lucide-react';
+import styles from './header.module.css';
 
-export default function Header() {
+function HeaderConteudo() {
   const [qtdCarrinho, setQtdCarrinho] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -249,5 +250,13 @@ export default function Header() {
 
       </div>
     </header>
+  );
+}
+
+export default function Header() {
+  return (
+    <Suspense fallback={<div style={{ height: '80px', background: '#0f172a' }}>Carregando menu...</div>}>
+      <HeaderConteudo />
+    </Suspense>
   );
 }

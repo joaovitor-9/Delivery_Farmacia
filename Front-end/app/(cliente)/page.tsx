@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './home.module.css'; 
 import SecaoCarrossel from '@/componentes/secaoCarrossel';
 import CardProduto from '@/componentes/cardProduto'; 
 
-export default function Home() {
+function HomeConteudo() {
   const [produtos, setProdutos] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
@@ -17,7 +17,9 @@ export default function Home() {
   const filtroAtual = searchParams.get('filtro') || 'Todos';
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/produtos')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+    
+    fetch(`${apiUrl}/produtos`)
       .then(resposta => resposta.json())
       .then(dados => {
         setProdutos(dados); 
@@ -84,5 +86,13 @@ export default function Home() {
         </>
       )}
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div style={{ padding: '20px', textAlign: 'center', color: '#fff' }}><h3>Carregando loja...</h3></div>}>
+      <HomeConteudo />
+    </Suspense>
   );
 }

@@ -29,7 +29,7 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/usuarios", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '[http://127.0.0.1:8000](http://127.0.0.1:8000)'}/usuarios`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
