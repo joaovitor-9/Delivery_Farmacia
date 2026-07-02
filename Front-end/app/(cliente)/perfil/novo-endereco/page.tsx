@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './novoEndereco.module.css';
 import { apiFetch } from '@/app/utils/api'; 
 
-export default function NovoEnderecoPage() {
+function NovoEnderecoConteudo() {
   const router = useRouter();
   const [clienteId, setClienteId] = useState<string>('');
   
@@ -137,5 +137,13 @@ export default function NovoEnderecoPage() {
         </button>
       </form>
     </main>
+  );
+}
+
+export default function NovoEnderecoPage() {
+  return (
+    <Suspense fallback={<div>Carregando formulário...</div>}>
+      <NovoEnderecoConteudo />
+    </Suspense>
   );
 }
