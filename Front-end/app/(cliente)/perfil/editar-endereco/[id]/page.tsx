@@ -3,6 +3,7 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import styles from './editarEndereco.module.css';
+import { apiFetch } from '@/app/utils/api'; 
 
 export default function EditarEnderecoPage() {
   const router = useRouter();
@@ -33,12 +34,11 @@ export default function EditarEnderecoPage() {
 
     const buscarEndereco = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-        const res = await fetch(`${apiUrl}/enderecos?cliente_id=${userObj.id}`);
+        const res = await apiFetch(`/enderecos?cliente_id=${userObj.id}`);
         
         if (res.ok) {
           const enderecos = await res.json();
-          const enderecoAtual = enderecos.find((e: any) => e.id === enderecoId);
+          const enderecoAtual = enderecos.find((e: any) => String(e.id) === String(enderecoId));
 
           if (enderecoAtual) {
             setApelido(enderecoAtual.apelido || '');
@@ -52,6 +52,8 @@ export default function EditarEnderecoPage() {
             alert('Endereço não encontrado.');
             router.push('/perfil');
           }
+        } else {
+           console.error("Erro na requisição, não autorizado ou dados inválidos.");
         }
       } catch (error) {
         console.error('Erro ao buscar endereço:', error);
@@ -78,10 +80,8 @@ export default function EditarEnderecoPage() {
     };
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-      const response = await fetch(`${apiUrl}/enderecos/${enderecoId}?usuario_id=${clienteId}`, {
+      const response = await apiFetch(`/enderecos/${enderecoId}?usuario_id=${clienteId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dadosAtualizados),
       });
 
@@ -103,8 +103,7 @@ export default function EditarEnderecoPage() {
     if (!confirmar) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-      const response = await fetch(`${apiUrl}/enderecos/${enderecoId}?usuario_id=${clienteId}`, {
+      const response = await apiFetch(`/enderecos/${enderecoId}?usuario_id=${clienteId}`, {
         method: 'DELETE',
       });
 
