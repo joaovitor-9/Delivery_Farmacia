@@ -163,6 +163,59 @@ export default function Carrinho() {
 
   if (carregando) return <main className={styles.container}><h3>Carregando carrinho...</h3></main>;
 
+  if (itensCarrinho.length === 0) {
+    return (
+      <main className={styles.container}>
+        <div className={styles.stepper}>
+          <div className={styles.stepActive}>
+            <div className={styles.stepCircle}>1</div>
+            <span>Carrinho</span>
+          </div>
+          <div className={styles.stepLine} style={{ backgroundColor: '#e2e8f0' }}></div>
+          <div className={styles.step}>
+            <div className={styles.stepCircle}>2</div>
+            <span>Identificação</span>
+          </div>
+          <div className={styles.stepLine} style={{ backgroundColor: '#e2e8f0' }}></div>
+          <div className={styles.step}>
+            <div className={styles.stepCircle}>3</div>
+            <span>Pagamento</span>
+          </div>
+        </div>
+
+        <h1 className={styles.title}>Meu Carrinho</h1>
+        
+        <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+          <span style={{ fontSize: '60px', display: 'block', marginBottom: '20px' }}>🛒</span>
+          <h2 style={{ color: '#1e1b4b', marginBottom: '15px', fontSize: '24px' }}>
+            Seu carrinho está vazio
+          </h2>
+          <p style={{ color: '#64748b', marginBottom: '30px' }}>
+            Volte para a loja para adicionar produtos ao seu carrinho.
+          </p>
+          <button 
+            onClick={() => router.push('/')}
+            style={{
+              backgroundColor: '#dc2626',
+              color: 'white',
+              padding: '16px 32px',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              transition: 'opacity 0.2s'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+            onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+          >
+            CONTINUAR COMPRANDO
+          </button>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className={styles.container}>
       
