@@ -151,6 +151,8 @@
   display: flex; 
   gap: 12px; 
   max-width: 100%;
+  box-sizing: border-box;
+  padding-right: 20px;
 }
 .pill {
   background: rgba(255, 255, 255, 0.1);
