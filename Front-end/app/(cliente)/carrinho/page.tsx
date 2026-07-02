@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ShoppingCart } from 'lucide-react';
 import styles from './carrinho.module.css';
 import { apiFetch } from '@/app/utils/api';
 
@@ -186,7 +186,7 @@ export default function Carrinho() {
         <h1 className={styles.title}>Meu Carrinho</h1>
         
         <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-          <span style={{ fontSize: '60px', display: 'block', marginBottom: '20px' }}>🛒</span>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}><ShoppingCart size={64} color="#94a3b8" strokeWidth={1.5} /></div>
           <h2 style={{ color: '#1e1b4b', marginBottom: '15px', fontSize: '24px' }}>
             Seu carrinho está vazio
           </h2>
