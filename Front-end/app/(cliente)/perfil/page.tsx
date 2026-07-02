@@ -45,12 +45,12 @@ export default function MinhaContaPage() {
 
       const buscarDadosDoPerfil = async () => {
         try {
-          const resUsuario = await apiFetch(`/usuarios/${clienteId}`);
+          const resUsuario = await apiFetch(`/usuarios/me`);
           if (resUsuario.ok) {
             setUsuario(await resUsuario.json());
           }
 
-          const resEnderecos = await apiFetch(`/enderecos?cliente_id=${clienteId}`);
+          const resEnderecos = await apiFetch(`/enderecos`);
           if (resEnderecos.ok) {
             setEnderecos(await resEnderecos.json());
           }
