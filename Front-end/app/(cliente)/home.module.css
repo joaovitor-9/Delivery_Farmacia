@@ -122,3 +122,32 @@
 .carousel::-webkit-scrollbar {
   display: none;
 }
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 15px;
+  }
+  .sectionTitle {
+    font-size: 20px;
+  }
+  .card {
+    flex: 0 0 160px; 
+    padding: 12px;
+  }
+  .imageArea {
+    height: 120px; 
+  }
+  .productName {
+    font-size: 13px;
+    padding-right: 0;
+  }
+  .price {
+    font-size: 16px;
+  }
+  .arrow {
+    display: none !important;
+  }
+  .carousel {
+    padding: 10px 5px;
+    gap: 15px;
+  }
+}

@@ -41,6 +41,7 @@
   width: 100%;
   display: flex;
   justify-content: center; 
+  max-width: 100%;
 }
 .searchContainer {
   flex: 0 1 580px; 
@@ -146,6 +147,7 @@
 .filterRow { 
   display: flex; 
   gap: 12px; 
+  max-width: 100%;
 }
 .pill {
   background: rgba(255, 255, 255, 0.1);
@@ -159,7 +161,6 @@
   background: white !important; 
   color: #1e1b4b !important; 
 }
-
 .cartBtn { 
   position: relative; 
   color: white; 
@@ -184,4 +185,63 @@
   text-decoration: none; 
   font-weight: 600; 
   z-index: 20; 
+}
+@media (max-width: 1280px) {
+  .header {
+    min-height: auto;
+    padding: 10px 0;
+  }
+  .container {
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    padding: 10px 15px;
+    gap: 15px;
+  }
+  .logoWrapper {
+    position: static;
+    transform: none;
+    width: auto;
+    order: 1; 
+  }
+  .logo, .logoClean {
+    height: 40px; 
+  }
+  .actions {
+    position: static;
+    transform: none;
+    width: auto;
+    order: 2;
+    gap: 15px; 
+  }
+  .userText {
+    display: none; 
+  }
+  .dropdown {
+    min-width: 160px;
+  }
+  .mainRow {
+    order: 3; 
+    width: 100%;
+  }
+  .searchContainer {
+    flex: 1;
+    height: 40px;
+  }
+  .filterRow {
+    order: 4;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    flex-wrap: nowrap;
+    scrollbar-width: none; 
+  }
+  .filterRow::-webkit-scrollbar {
+    display: none; 
+  }
+  .pill {
+    white-space: nowrap; 
+    padding: 6px 16px;
+    font-size: 13px;
+  }
 }
