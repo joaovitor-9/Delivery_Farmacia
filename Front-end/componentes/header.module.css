@@ -234,12 +234,12 @@
   .filterRow {
     order: 4;
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 5px;
-    flex-wrap: nowrap;
-    scrollbar-width: none; 
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 10px; 
     box-sizing: border-box;
-    padding-right: 20px;
+    padding: 0 10px 10px 10px; 
   }
   .filterRow::-webkit-scrollbar {
     display: none; 
