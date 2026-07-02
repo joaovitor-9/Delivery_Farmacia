@@ -205,7 +205,7 @@
     order: 1; 
   }
   .logo, .logoClean {
-    height: 40px; 
+    height: 60px; 
   }
   .actions {
     position: static;
@@ -247,6 +247,11 @@
   @media (max-width: 767px) {
     .actions {
       display: none;
+    }
+    .logoWrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
   }
 }
