@@ -3,7 +3,8 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import styles from './editarEndereco.module.css';
-import { apiFetch } from '@/app/utils/api'; 
+import { apiFetch } from '@/app/utils/api';
+import { mascararCep, apenasDigitos } from '@/app/utils/mascaras';
 
 export default function EditarEnderecoPage() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function EditarEnderecoPage() {
 
           if (enderecoAtual) {
             setApelido(enderecoAtual.apelido || '');
-            setCep(enderecoAtual.cep || '');
+            setCep(mascararCep(enderecoAtual.cep || ''));
             setRua(enderecoAtual.rua || enderecoAtual.logradouro || '');
             setNumero(enderecoAtual.numero || '');
             setBairro(enderecoAtual.bairro || '');
@@ -71,7 +72,7 @@ export default function EditarEnderecoPage() {
 
     const dadosAtualizados = {
       apelido,
-      cep,
+      cep: apenasDigitos(cep),
       logradouro: rua, 
       numero,
       bairro,
@@ -134,7 +135,7 @@ export default function EditarEnderecoPage() {
       <form className={styles.form} onSubmit={handleUpdate}>
         <div className={styles.inputGroup}>
           <label>CEP</label>
-          <input type="text" value={cep} onChange={(e) => setCep(e.target.value)} required />
+          <input type="text" value={cep} onChange={(e) => setCep(mascararCep(e.target.value))} placeholder="00000-000" maxLength={9} minLength={9} inputMode="numeric" required />
         </div>
 
         <div className={styles.row}>

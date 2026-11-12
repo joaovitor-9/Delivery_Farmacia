@@ -12,7 +12,8 @@ class UsuarioBase(BaseModel):
     @field_validator('cpf')
     @classmethod
     def validar_cpf(cls, v: str):
-        if not re.match(r'^\d{11}$', v):
+        v = re.sub(r'\D', '', v)
+        if not re.fullmatch(r'\d{11}', v):
             raise ValueError('O CPF deve conter exatamente 11 dígitos numéricos.')
         return v
 

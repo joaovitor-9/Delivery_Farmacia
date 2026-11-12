@@ -4,6 +4,7 @@ import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './cadastro.module.css';
+import { mascararCpf, apenasDigitos } from '@/app/utils/mascaras';
 
 export default function CadastroPage() {
   const router = useRouter();
@@ -20,7 +21,8 @@ export default function CadastroPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const novoValor = name === 'cpf' ? mascararCpf(value) : value;
+    setFormData((prev) => ({ ...prev, [name]: novoValor }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -29,12 +31,12 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '[http://127.0.0.1:8000](http://127.0.0.1:8000)'}/usuarios`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'}/usuarios`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, cpf: apenasDigitos(formData.cpf) }),
       });
 
       if (!response.ok) {
@@ -74,7 +76,7 @@ export default function CadastroPage() {
 
           <div className={styles.inputGroup}>
             <label>CPF</label>
-            <input type="text" name="cpf" value={formData.cpf} onChange={handleChange} required />
+            <input type="text" name="cpf" value={formData.cpf} onChange={handleChange} placeholder="000.000.000-00" maxLength={14} minLength={14} inputMode="numeric" required />
           </div>
 
           <div className={styles.inputGroup}>

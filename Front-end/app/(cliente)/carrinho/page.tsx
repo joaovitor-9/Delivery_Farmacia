@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Trash2, ShoppingCart } from 'lucide-react';
 import styles from './carrinho.module.css';
 import { apiFetch } from '@/app/utils/api';
+import { mascararCep, apenasDigitos } from '@/app/utils/mascaras';
 
 interface ItemCarrinho {
   produto_id: string;
@@ -94,6 +95,10 @@ export default function Carrinho() {
     let idDoEnderecoParaOPedido = enderecoSelecionadoId;
 
     if (enderecoSelecionadoId === 'novo') {
+      if (apenasDigitos(endereco.cep).length !== 8) {
+        alert("Informe um CEP válido com 8 dígitos.");
+        return;
+      }
       if (!endereco.cep || !endereco.logradouro || !endereco.numero || !endereco.cidade) {
         alert("Por favor, preencha os campos obrigatórios do endereço.");
         return;
@@ -102,7 +107,7 @@ export default function Carrinho() {
       try {
         const dadosEndereco = {
           cliente_id: clienteId, 
-          cep: endereco.cep,
+          cep: apenasDigitos(endereco.cep),
           logradouro: endereco.logradouro,
           numero: endereco.numero,
           bairro: endereco.bairro,
@@ -315,7 +320,9 @@ export default function Carrinho() {
                     type="text" 
                     placeholder="00000-000" 
                     value={endereco.cep}
-                    onChange={(e) => setEndereco({...endereco, cep: e.target.value})}
+                    maxLength={9}
+                    inputMode="numeric"
+                    onChange={(e) => setEndereco({...endereco, cep: mascararCep(e.target.value)})}
                   />
                 </div>
                 <div className={styles.inputGroup}>

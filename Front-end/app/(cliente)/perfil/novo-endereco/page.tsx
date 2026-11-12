@@ -3,7 +3,8 @@
 import { useState, FormEvent, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './novoEndereco.module.css';
-import { apiFetch } from '@/app/utils/api'; 
+import { apiFetch } from '@/app/utils/api';
+import { mascararCep, apenasDigitos } from '@/app/utils/mascaras';
 
 function NovoEnderecoConteudo() {
   const router = useRouter();
@@ -34,7 +35,7 @@ function NovoEnderecoConteudo() {
 
     const novoEndereco = {
       cliente_id: clienteId,
-      cep,
+      cep: apenasDigitos(cep),
       logradouro: rua,
       numero,
       bairro,
@@ -77,8 +78,12 @@ function NovoEnderecoConteudo() {
           <input 
             type="text" 
             value={cep} 
-            onChange={(e) => setCep(e.target.value)} 
-            required 
+            onChange={(e) => setCep(mascararCep(e.target.value))}
+            placeholder="00000-000"
+            maxLength={9}
+            minLength={9}
+            inputMode="numeric"
+            required
           />
         </div>
 
